@@ -24,9 +24,9 @@
 hs_err_pid*
 
 /.idea/
-/components/cafe.lavilla.food.menu.core/target/
-/components/cafe.lavilla.food.menu.core/cafe.lavilla.food.menu.core.iml
-/components/cafe.lavilla.food.menu.endpoint/target/
-/components/cafe.lavilla.food.menu.endpoint/cafe.lavilla.food.menu.endpoint.iml
+/components/cafe.lavilla.food.menu/target/
+/components/cafe.lavilla.food.menu/cafe.lavilla.food.menu.core.iml
+/components/cafe.lavilla.food.menu/target/
+/components/cafe.lavilla.food.menu/cafe.lavilla.food.menu.endpoint.iml
 /target/
 /cafe-lavilla-food-menu.iml

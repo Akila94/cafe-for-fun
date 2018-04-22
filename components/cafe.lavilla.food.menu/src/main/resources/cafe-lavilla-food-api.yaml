@@ -1,0 +1,162 @@
+swagger: '2.0'
+
+info:
+  title: Cafe Lavilla Food API
+  description: >
+    This is an api for handle food in Cafe Lavilla.
+  version: 1.0.0
+
+schemes:
+  - http
+  - https
+host: localhost
+
+basePath: /lavilla
+
+consumes:
+  - application/json
+produces:
+  - application/json
+
+paths:
+  /menu/salad:
+    post:
+      operationId: setSalad
+      summary: Adds salad
+      description: >
+        This API is used to add a salad.
+      tags:
+        - Adding Salad
+      parameters:
+        - in: body
+          name: salad
+          description: "Adding salad"
+          schema:
+            $ref: '#/definitions/Salad'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Salad'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/salads/{salad-id}:
+    get:
+      operationId: getSalad
+      summary: Get the given salad
+      description: >
+        This API is used to get a given salad
+      tags:
+      - Get salad
+      parameters:
+      - in: path
+        name: salad-id
+        description: Salad to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given salad"
+          schema:
+            $ref: '#/definitions/Salad'
+        400:
+          description: "Invalid salad-id supplied"
+        404:
+          description: "Supplied salad not found"
+
+    put:
+      operationId: updateSalad
+      summary: Updates the given salad.
+      description: >
+        This API is used to update a given salad
+      tags:
+      - Updating salad
+      parameters:
+      - in: path
+        name: salad-id
+        description: Salad to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given Salad.
+        required: true
+        schema:
+          $ref: '#/definitions/Salad'
+      responses:
+        200:
+          description: Updated salad successfully
+        400:
+          description: Invalid Salad supplied
+        404:
+          description: Salad not found
+
+    delete:
+      operationId: deleteSalad
+      summary: Deletes the given salad
+      description: >
+        This API is used to delete a given salad
+      tags:
+      - Deleting salad
+      parameters:
+      - in: path
+        name: salad-id
+        description: Salad to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Salad deleted successfully
+        400:
+          description: Salad id not found
+        404:
+         description: Salad not found
+
+definitions:
+  Success:
+    properties:
+      error:
+        type: string
+        description: Success
+        example: "Successfull"
+    required:
+      - error
+  Error:
+    properties:
+      error:
+        type: string
+        description: Invalid input.
+        example: "invalid_request"
+    required:
+      - error
+  Salad:
+    type: object
+    required:
+      - id
+        name
+        description
+        arabicDescription
+        price
+        imgUrl
+    properties:
+      id:
+        type: integer
+        example: "123"
+      name:
+        type: string
+        example: "Fruit Salad"
+      description:
+        type: string
+        example: "Salad with fruit and ice cream"
+      arabicDescription:
+        type: string
+        example: "Arabic Description of the Salad"
+      price:
+        type: integer
+        example: 100
+      imgUrl:
+        type: string
+        example: ""
