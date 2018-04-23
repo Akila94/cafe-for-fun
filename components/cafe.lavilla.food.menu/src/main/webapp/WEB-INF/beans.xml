@@ -7,7 +7,7 @@
     <bean class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"/>
     <jaxrs:server id="services" address="/">
         <jaxrs:serviceBeans>
-            <bean class="cafe.lavilla.food.menu.endpoint.MenuApi"/>
+            <bean class="cafe.lavilla.food.menu.MenuApi"/>
             
         </jaxrs:serviceBeans>
         <jaxrs:providers>

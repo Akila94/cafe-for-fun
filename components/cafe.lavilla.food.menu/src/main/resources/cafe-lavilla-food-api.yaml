@@ -19,6 +19,23 @@ produces:
   - application/json
 
 paths:
+  /menu/categories:
+    get:
+      operationId: getCategories
+      summary: Gets all food categories
+      description: >
+        This API is used to get all food categories
+      tags:
+        - Getting All Food Categories
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Categories'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
   /menu/salad:
     post:
       operationId: setSalad
@@ -26,18 +43,18 @@ paths:
       description: >
         This API is used to add a salad.
       tags:
-        - Adding Salad
+        - Salads
       parameters:
         - in: body
-          name: salad
+          name: body
           description: "Adding salad"
           schema:
-            $ref: '#/definitions/Salad'
+            $ref: '#/definitions/FoodDetails'
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/Salad'
+            $ref: '#/definitions/FoodDetails'
         '400':
           description: Bad Request
           schema:
@@ -50,7 +67,7 @@ paths:
       description: >
         This API is used to get a given salad
       tags:
-      - Get salad
+      - Salads
       parameters:
       - in: path
         name: salad-id
@@ -61,7 +78,7 @@ paths:
         200:
           description: "Successfully obtained the given salad"
           schema:
-            $ref: '#/definitions/Salad'
+            $ref: '#/definitions/FoodDetails'
         400:
           description: "Invalid salad-id supplied"
         404:
@@ -73,7 +90,7 @@ paths:
       description: >
         This API is used to update a given salad
       tags:
-      - Updating salad
+      - Salads
       parameters:
       - in: path
         name: salad-id
@@ -85,7 +102,7 @@ paths:
         description: Update given Salad.
         required: true
         schema:
-          $ref: '#/definitions/Salad'
+          $ref: '#/definitions/FoodDetails'
       responses:
         200:
           description: Updated salad successfully
@@ -100,7 +117,7 @@ paths:
       description: >
         This API is used to delete a given salad
       tags:
-      - Deleting salad
+      - Salads
       parameters:
       - in: path
         name: salad-id
@@ -114,16 +131,957 @@ paths:
           description: Salad id not found
         404:
          description: Salad not found
+  /menu/breakfast:
+    post:
+      operationId: set breakfast
+      summary: Adds breakfast
+      description: >
+        This API is used to add a breakfast.
+      tags:
+        - Breakfast
+      parameters:
+        - in: body
+          name: body
+          description: "Adding breakfast"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
 
+  /menu/breakfasts/{breakfast-id}:
+    get:
+      operationId: getBreakfast
+      summary: Get the given breakfast
+      description: >
+        This API is used to get a given breakfast
+      tags:
+      - Breakfast
+      parameters:
+      - in: path
+        name: breakfast-id
+        description: breakfast to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given breakfast"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid breakfast-id supplied"
+        404:
+          description: "Supplied breakfast not found"
+
+    put:
+      operationId: updateBreakfast
+      summary: Updates the given breakfast.
+      description: >
+        This API is used to update a given breakfast
+      tags:
+      - Breakfast
+      parameters:
+      - in: path
+        name: breakfast-id
+        description: breakfast to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given breakfast.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated breakfast successfully
+        400:
+          description: Invalid breakfast supplied
+        404:
+          description: breakfast not found
+
+    delete:
+      operationId: deleteBreakfast
+      summary: Deletes the given breakfast
+      description: >
+        This API is used to delete a given breakfast
+      tags:
+      - Breakfast
+      parameters:
+      - in: path
+        name: breakfast-id
+        description: breakfast to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: breakfast deleted successfully
+        400:
+          description: breakfast id not found
+        404:
+         description: breakfast not found
+  /menu/coffee-and-tea:
+    post:
+      operationId: setCoffeeAndTea
+      summary: Adds coffee and tea
+      description: >
+        This API is used to add a coffee and tea.
+      tags:
+        - Coffee and Tea
+      parameters:
+        - in: body
+          name: body
+          description: "Adding coffee and tea"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/cofee-and-tea/{coffee-and-tea-id}:
+    get:
+      operationId: getCoffeeAndTea
+      summary: Get the given coffee and tea
+      description: >
+        This API is used to get a given coffee and tea
+      tags:
+      - Coffee and Tea
+      parameters:
+      - in: path
+        name: coffee-and-tea-id
+        description: coffee and tea to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given coffee and tea"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid coffee-and-tea-id supplied"
+        404:
+          description: "Supplied coffee and tea not found"
+
+    put:
+      operationId: updateCoffeeAndTea
+      summary: Updates the given coffee and tea.
+      description: >
+        This API is used to update a given coffee and tea
+      tags:
+      - Coffee and Tea
+      parameters:
+      - in: path
+        name: coffee-and-tea-id
+        description: Coffee and tea to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given coffee and tea.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated coffee and tea successfully
+        400:
+          description: Invalid coffee and tea supplied
+        404:
+          description: coffee and tea not found
+
+    delete:
+      operationId: deleteCoffeeAndTea
+      summary: Deletes the given coffee and tea
+      description: >
+        This API is used to delete a given coffee and tea
+      tags:
+      - Coffee and Tea
+      parameters:
+      - in: path
+        name: coffee-and-tea-id
+        description: coffee and tea to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: coffee and tea deleted successfully
+        400:
+          description: coffee and tea id not found
+        404:
+         description: coffee and tea not found
+  /menu/dessert:
+    post:
+      operationId: setDesserts
+      summary: Adds desserts
+      description: >
+        This API is used to add a desserts.
+      tags:
+        - Desserts
+      parameters:
+        - in: body
+          name: body
+          description: "Adding desserts"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/desserts/{dessert-id}:
+    get:
+      operationId: getDesserts
+      summary: Get the given dessert
+      description: >
+        This API is used to get a given dessert
+      tags:
+      - Desserts
+      parameters:
+      - in: path
+        name: dessert-id
+        description: dessert to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given dessert"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid dessert-id supplied"
+        404:
+          description: "Supplied dessert not found"
+
+    put:
+      operationId: updateDessert
+      summary: Updates the given dessert.
+      description: >
+        This API is used to update a given dessert
+      tags:
+      - Desserts
+      parameters:
+      - in: path
+        name: dessert-id
+        description: dessert to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given dessert.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated dessert successfully
+        400:
+          description: Invalid dessert supplied
+        404:
+          description: Dessert not found
+
+    delete:
+      operationId: deleteDessert
+      summary: Deletes the given dessert
+      description: >
+        This API is used to delete a given dessert
+      tags:
+      - Desserts
+      parameters:
+      - in: path
+        name: dessert-id
+        description: dessert to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: dessert deleted successfully
+        400:
+          description: dessert id not found
+        404:
+         description: dessert not found
+  /menu/french-toast:
+    post:
+      operationId: setFrenchToast
+      summary: Adds french toasts
+      description: >
+        This API is used to add a french toasts.
+      tags:
+        - French Toasts
+      parameters:
+        - in: body
+          name: body
+          description: "Adding french toasts"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/french-toasts/{french-toast-id}:
+    get:
+      operationId: getFrenchToast
+      summary: Get the given french toast
+      description: >
+        This API is used to get a given french-toast
+      tags:
+      - French Toasts
+      parameters:
+      - in: path
+        name: french-toast-id
+        description: french toast to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given french toast"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid french-toast-id supplied"
+        404:
+          description: "Supplied french toast not found"
+
+    put:
+      operationId: updateFrenchToast
+      summary: Updates the given french toast.
+      description: >
+        This API is used to update a given french toast
+      tags:
+      - French Toasts
+      parameters:
+      - in: path
+        name: french-toast-id
+        description: french toast to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given french toast.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated french toast successfully
+        400:
+          description: Invalid french toast supplied
+        404:
+          description: french toast not found
+
+    delete:
+      operationId: deleteFrenchToast
+      summary: Deletes the given french toast
+      description: >
+        This API is used to delete a given french toast
+      tags:
+      - French Toasts
+      parameters:
+      - in: path
+        name: french-toast-id
+        description: french toast to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: french toast deleted successfully
+        400:
+          description: french toast id not found
+        404:
+         description: french toast not found
+  /menu/main-course:
+    post:
+      operationId: setMainCourse
+      summary: Adds main courses
+      description: >
+        This API is used to add a main course.
+      tags:
+        - Main Courses
+      parameters:
+        - in: body
+          name: body
+          description: "Adding main courses"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/main-course/{main-course-id}:
+    get:
+      operationId: getMainCourse
+      summary: Get the given main course
+      description: >
+        This API is used to get a given main course
+      tags:
+      - Main Courses
+      parameters:
+      - in: path
+        name: main-course-id
+        description: main course to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given main course"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid main-course-id supplied"
+        404:
+          description: "Supplied main course not found"
+
+    put:
+      operationId: updateMainCourse
+      summary: Updates the given main course.
+      description: >
+        This API is used to update a given main course
+      tags:
+      - Main Courses
+      parameters:
+      - in: path
+        name: main-course-id
+        description: main course to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given main course.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated main course successfully
+        400:
+          description: Invalid main course supplied
+        404:
+          description: main course not found
+
+    delete:
+      operationId: deleteMainCourse
+      summary: Deletes the given main course
+      description: >
+        This API is used to delete a given main course
+      tags:
+      - Main Courses
+      parameters:
+      - in: path
+        name: main-course-id
+        description: main course to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: main course deleted successfully
+        400:
+          description: main course id not found
+        404:
+         description: main course not found
+  /menu/pancakes:
+    post:
+      operationId: setPancake
+      summary: Adds pancakes
+      description: >
+        This API is used to add a pancake.
+      tags:
+        - Pancakes
+      parameters:
+        - in: body
+          name: body
+          description: "Adding pancake"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/pancakes/{pancake-id}:
+    get:
+      operationId: getPancake
+      summary: Get the given pancake
+      description: >
+        This API is used to get a given pancake
+      tags:
+      - Pancakes
+      parameters:
+      - in: path
+        name: pancake-id
+        description: pancake to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given pancake"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid pancake-id supplied"
+        404:
+          description: "Supplied pancake not found"
+
+    put:
+      operationId: updatePancake
+      summary: Updates the given pancake.
+      description: >
+        This API is used to update a given pancake
+      tags:
+      - Pancakes
+      parameters:
+      - in: path
+        name: pancake-id
+        description: pancake to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given pancake.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated pancake successfully
+        400:
+          description: Invalid pancake supplied
+        404:
+          description: pancake not found
+
+    delete:
+      operationId: deletePancake
+      summary: Deletes the given pancake
+      description: >
+        This API is used to delete a given pancake
+      tags:
+      - Pancakes
+      parameters:
+      - in: path
+        name: pancake-id
+        description: pancake to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: pancake deleted successfully
+        400:
+          description: pancake id not found
+        404:
+         description: pancake not found
+  /menu/pastas:
+    post:
+      operationId: setPasta
+      summary: Adds pastas
+      description: >
+        This API is used to add a pasta.
+      tags:
+        - Pastas
+      parameters:
+        - in: body
+          name: body
+          description: "Adding pasta"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/pastas/{pasta-id}:
+    get:
+      operationId: getPasta
+      summary: Get the given pasta
+      description: >
+        This API is used to get a given pasta
+      tags:
+      - Pastas
+      parameters:
+      - in: path
+        name: pasta-id
+        description: pasta to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given pasta"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid pasta-id supplied"
+        404:
+          description: "Supplied pasta not found"
+
+    put:
+      operationId: updatePasta
+      summary: Updates the given pasta.
+      description: >
+        This API is used to update a given pasta
+      tags:
+      - Pastas
+      parameters:
+      - in: path
+        name: pasta-id
+        description: pasta to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given pasta.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated pasta successfully
+        400:
+          description: Invalid pasta supplied
+        404:
+          description: pasta not found
+
+    delete:
+      operationId: deletePasta
+      summary: Deletes the given pasta
+      description: >
+        This API is used to delete a given pasta
+      tags:
+      - Pastas
+      parameters:
+      - in: path
+        name: pasta-id
+        description: pasta to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: pasta deleted successfully
+        400:
+          description: pasta id not found
+        404:
+         description: pasta not found
+  /menu/quenchers:
+    post:
+      operationId: setQuencher
+      summary: Adds quenchers
+      description: >
+        This API is used to add a quencher.
+      tags:
+        - Quenchers
+      parameters:
+        - in: body
+          name: body
+          description: "Adding quencher"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/quenchers/{quencher-id}:
+    get:
+      operationId: getQuencher
+      summary: Get the given quencher
+      description: >
+        This API is used to get a given quencher
+      tags:
+      - Quenchers
+      parameters:
+      - in: path
+        name: quencher-id
+        description: quencher to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given quencher"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid quencher-id supplied"
+        404:
+          description: "Supplied quencher not found"
+
+    put:
+      operationId: updateQuencher
+      summary: Updates the given quencher.
+      description: >
+        This API is used to update a given quencher
+      tags:
+      - Quenchers
+      parameters:
+      - in: path
+        name: quencher-id
+        description: quencher to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given quencher.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated quencher successfully
+        400:
+          description: Invalid quencher supplied
+        404:
+          description: quencher not found
+
+    delete:
+      operationId: deleteQuencher
+      summary: Deletes the given quencher
+      description: >
+        This API is used to delete a given quencher
+      tags:
+      - Quenchers
+      parameters:
+      - in: path
+        name: quencher-id
+        description: quencher to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: quencher deleted successfully
+        400:
+          description: quencher id not found
+        404:
+         description: quencher not found
+  /menu/starters:
+    post:
+      operationId: setStarter
+      summary: Adds starters
+      description: >
+        This API is used to add a starter.
+      tags:
+        - Starters
+      parameters:
+        - in: body
+          name: body
+          description: "Adding starter"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/starters/{starter-id}:
+    get:
+      operationId: getStarters
+      summary: Get the given starter
+      description: >
+        This API is used to get a given starter
+      tags:
+      - Starters
+      parameters:
+      - in: path
+        name: starter-id
+        description: starter to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given starter"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid starter-id supplied"
+        404:
+          description: "Supplied starter not found"
+
+    put:
+      operationId: updateStarter
+      summary: Updates the given starter.
+      description: >
+        This API is used to update a given starter
+      tags:
+      - Starters
+      parameters:
+      - in: path
+        name: starter-id
+        description: starter to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given starter.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated starter successfully
+        400:
+          description: Invalid starter supplied
+        404:
+          description: starter not found
+
+    delete:
+      operationId: deleteStarter
+      summary: Deletes the given starter
+      description: >
+        This API is used to delete a given starter
+      tags:
+      - Starters
+      parameters:
+      - in: path
+        name: starter-id
+        description: starter to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: starter deleted successfully
+        400:
+          description: starter id not found
+        404:
+         description: starter not found
+  /menu/waffles:
+    post:
+      operationId: setWaffle
+      summary: Adds waffles
+      description: >
+        This API is used to add a waffle.
+      tags:
+        - Waffles
+      parameters:
+        - in: body
+          name: body
+          description: "Adding waffle"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+
+  /menu/waffles/{waffle-id}:
+    get:
+      operationId: getWaffle
+      summary: Get the given waffle
+      description: >
+        This API is used to get a given waffle
+      tags:
+      - Waffles
+      parameters:
+      - in: path
+        name: waffle-id
+        description: waffle to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: "Successfully obtained the given waffle"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Invalid waffle-id supplied"
+        404:
+          description: "Supplied waffle not found"
+
+    put:
+      operationId: updateWaffle
+      summary: Updates the given waffle.
+      description: >
+        This API is used to update a given waffle
+      tags:
+      - Waffles
+      parameters:
+      - in: path
+        name: waffle-id
+        description: waffle to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Update given waffle.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated waffle successfully
+        400:
+          description: Invalid waffle supplied
+        404:
+          description: waffle not found
+
+    delete:
+      operationId: deleteWaffle
+      summary: Deletes the given waffle
+      description: >
+        This API is used to delete a given waffle
+      tags:
+      - Waffles
+      parameters:
+      - in: path
+        name: waffle-id
+        description: waffle to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: waffle deleted successfully
+        400:
+          description: waffle id not found
+        404:
+         description: waffle not found
 definitions:
-  Success:
-    properties:
-      error:
-        type: string
-        description: Success
-        example: "Successfull"
-    required:
-      - error
   Error:
     properties:
       error:
@@ -132,31 +1090,79 @@ definitions:
         example: "invalid_request"
     required:
       - error
-  Salad:
+  Categories:
+    properties:
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/Category'
+  Category:
+    properties:
+      salads:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      breakfast:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      cofeeAndTea:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      desserts:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      frenchToast:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      mainCource:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      panCake:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      pasta:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      quenchers:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      starters:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      waffles:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+  FoodDetails:
     type: object
     required:
       - id
-        name
+        title
         description
-        arabicDescription
         price
-        imgUrl
+        imageSource
     properties:
       id:
         type: integer
-        example: "123"
-      name:
+        example: 1
+      title:
         type: string
-        example: "Fruit Salad"
+        example: "Food Name"
       description:
         type: string
-        example: "Salad with fruit and ice cream"
-      arabicDescription:
-        type: string
-        example: "Arabic Description of the Salad"
+        example: "This is the Food Name"
       price:
         type: integer
         example: 100
-      imgUrl:
+      imageSource:
         type: string
-        example: ""
+        example: "https://localhost:8080/image"
