@@ -1,4 +1,4 @@
-package cafe.lavilla.food.menu.endpoint.dto;
+package cafe.lavilla.food.menu.dto;
 
 
 import io.swagger.annotations.*;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 
 @ApiModel(description = "")
-public class SuccessDTO  {
+public class ErrorDTO  {
   
   
   @NotNull
@@ -19,9 +19,9 @@ public class SuccessDTO  {
 
   
   /**
-   * Success
+   * Invalid input.
    **/
-  @ApiModelProperty(required = true, value = "Success")
+  @ApiModelProperty(required = true, value = "Invalid input.")
   @JsonProperty("error")
   public String getError() {
     return error;
@@ -35,7 +35,7 @@ public class SuccessDTO  {
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SuccessDTO {\n");
+    sb.append("class ErrorDTO {\n");
     
     sb.append("  error: ").append(error).append("\n");
     sb.append("}\n");

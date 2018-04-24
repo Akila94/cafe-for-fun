@@ -1,4 +1,4 @@
-package cafe.lavilla.food.menu.endpoint.dto;
+package cafe.lavilla.food.menu.dto;
 
 
 import io.swagger.annotations.*;
@@ -11,26 +11,38 @@ import javax.validation.constraints.NotNull;
 
 
 @ApiModel(description = "")
-public class SaladDTO  {
+public class FoodDetailsDTO  {
   
+  
+  
+  private String category = null;
   
   
   private Integer id = null;
   
   
-  private String name = null;
+  private String title = null;
   
   
   private String description = null;
   
   
-  private String arabicDescription = null;
-  
-  
   private Integer price = null;
   
   
-  private String imgUrl = null;
+  private String imageSource = null;
+
+  
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("category")
+  public String getCategory() {
+    return category;
+  }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
   
   /**
@@ -48,12 +60,12 @@ public class SaladDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("name")
-  public String getName() {
-    return name;
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
   }
-  public void setName(String name) {
-    this.name = name;
+  public void setTitle(String title) {
+    this.title = title;
   }
 
   
@@ -72,18 +84,6 @@ public class SaladDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("arabicDescription")
-  public String getArabicDescription() {
-    return arabicDescription;
-  }
-  public void setArabicDescription(String arabicDescription) {
-    this.arabicDescription = arabicDescription;
-  }
-
-  
-  /**
-   **/
-  @ApiModelProperty(value = "")
   @JsonProperty("price")
   public Integer getPrice() {
     return price;
@@ -96,12 +96,12 @@ public class SaladDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("imgUrl")
-  public String getImgUrl() {
-    return imgUrl;
+  @JsonProperty("imageSource")
+  public String getImageSource() {
+    return imageSource;
   }
-  public void setImgUrl(String imgUrl) {
-    this.imgUrl = imgUrl;
+  public void setImageSource(String imageSource) {
+    this.imageSource = imageSource;
   }
 
   
@@ -109,14 +109,14 @@ public class SaladDTO  {
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
-    sb.append("class SaladDTO {\n");
+    sb.append("class FoodDetailsDTO {\n");
     
+    sb.append("  category: ").append(category).append("\n");
     sb.append("  id: ").append(id).append("\n");
-    sb.append("  name: ").append(name).append("\n");
+    sb.append("  title: ").append(title).append("\n");
     sb.append("  description: ").append(description).append("\n");
-    sb.append("  arabicDescription: ").append(arabicDescription).append("\n");
     sb.append("  price: ").append(price).append("\n");
-    sb.append("  imgUrl: ").append(imgUrl).append("\n");
+    sb.append("  imageSource: ").append(imageSource).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

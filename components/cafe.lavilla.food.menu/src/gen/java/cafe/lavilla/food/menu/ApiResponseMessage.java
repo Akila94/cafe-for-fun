@@ -1,4 +1,4 @@
-package cafe.lavilla.food.menu.endpoint;
+package cafe.lavilla.food.menu;
 
 import javax.xml.bind.annotation.XmlTransient;
 
