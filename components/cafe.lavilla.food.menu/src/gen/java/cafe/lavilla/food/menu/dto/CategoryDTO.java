@@ -18,13 +18,13 @@ public class CategoryDTO  {
   
   
   
-  private List<FoodDetailsDTO> salads = new ArrayList<FoodDetailsDTO>();
+  private List<FoodDetailsDTO> salad = new ArrayList<FoodDetailsDTO>();
   
   
   private List<FoodDetailsDTO> breakfast = new ArrayList<FoodDetailsDTO>();
   
   
-  private List<FoodDetailsDTO> cofeeAndTea = new ArrayList<FoodDetailsDTO>();
+  private List<FoodDetailsDTO> hotDrinks = new ArrayList<FoodDetailsDTO>();
   
   
   private List<FoodDetailsDTO> desserts = new ArrayList<FoodDetailsDTO>();
@@ -36,10 +36,10 @@ public class CategoryDTO  {
   private List<FoodDetailsDTO> mainCource = new ArrayList<FoodDetailsDTO>();
   
   
-  private List<FoodDetailsDTO> panCake = new ArrayList<FoodDetailsDTO>();
+  private List<FoodDetailsDTO> pancake = new ArrayList<FoodDetailsDTO>();
   
   
-  private List<FoodDetailsDTO> pasta = new ArrayList<FoodDetailsDTO>();
+  private List<FoodDetailsDTO> pastas = new ArrayList<FoodDetailsDTO>();
   
   
   private List<FoodDetailsDTO> quenchers = new ArrayList<FoodDetailsDTO>();
@@ -54,12 +54,12 @@ public class CategoryDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("salads")
-  public List<FoodDetailsDTO> getSalads() {
-    return salads;
+  @JsonProperty("salad")
+  public List<FoodDetailsDTO> getSalad() {
+    return salad;
   }
-  public void setSalads(List<FoodDetailsDTO> salads) {
-    this.salads = salads;
+  public void setSalad(List<FoodDetailsDTO> salad) {
+    this.salad = salad;
   }
 
   
@@ -78,12 +78,12 @@ public class CategoryDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("cofeeAndTea")
-  public List<FoodDetailsDTO> getCofeeAndTea() {
-    return cofeeAndTea;
+  @JsonProperty("hotDrinks")
+  public List<FoodDetailsDTO> getHotDrinks() {
+    return hotDrinks;
   }
-  public void setCofeeAndTea(List<FoodDetailsDTO> cofeeAndTea) {
-    this.cofeeAndTea = cofeeAndTea;
+  public void setHotDrinks(List<FoodDetailsDTO> hotDrinks) {
+    this.hotDrinks = hotDrinks;
   }
 
   
@@ -126,24 +126,24 @@ public class CategoryDTO  {
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("panCake")
-  public List<FoodDetailsDTO> getPanCake() {
-    return panCake;
+  @JsonProperty("pancake")
+  public List<FoodDetailsDTO> getPancake() {
+    return pancake;
   }
-  public void setPanCake(List<FoodDetailsDTO> panCake) {
-    this.panCake = panCake;
+  public void setPancake(List<FoodDetailsDTO> pancake) {
+    this.pancake = pancake;
   }
 
   
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("pasta")
-  public List<FoodDetailsDTO> getPasta() {
-    return pasta;
+  @JsonProperty("pastas")
+  public List<FoodDetailsDTO> getPastas() {
+    return pastas;
   }
-  public void setPasta(List<FoodDetailsDTO> pasta) {
-    this.pasta = pasta;
+  public void setPastas(List<FoodDetailsDTO> pastas) {
+    this.pastas = pastas;
   }
 
   
@@ -189,14 +189,14 @@ public class CategoryDTO  {
     StringBuilder sb = new StringBuilder();
     sb.append("class CategoryDTO {\n");
     
-    sb.append("  salads: ").append(salads).append("\n");
+    sb.append("  salad: ").append(salad).append("\n");
     sb.append("  breakfast: ").append(breakfast).append("\n");
-    sb.append("  cofeeAndTea: ").append(cofeeAndTea).append("\n");
+    sb.append("  hotDrinks: ").append(hotDrinks).append("\n");
     sb.append("  desserts: ").append(desserts).append("\n");
     sb.append("  frenchToast: ").append(frenchToast).append("\n");
     sb.append("  mainCource: ").append(mainCource).append("\n");
-    sb.append("  panCake: ").append(panCake).append("\n");
-    sb.append("  pasta: ").append(pasta).append("\n");
+    sb.append("  pancake: ").append(pancake).append("\n");
+    sb.append("  pastas: ").append(pastas).append("\n");
     sb.append("  quenchers: ").append(quenchers).append("\n");
     sb.append("  starters: ").append(starters).append("\n");
     sb.append("  waffles: ").append(waffles).append("\n");

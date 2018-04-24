@@ -15,6 +15,9 @@ public class FoodDetailsDTO  {
   
   
   
+  private String category = null;
+  
+  
   private Integer id = null;
   
   
@@ -28,6 +31,18 @@ public class FoodDetailsDTO  {
   
   
   private String imageSource = null;
+
+  
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("category")
+  public String getCategory() {
+    return category;
+  }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
   
   /**
@@ -96,6 +111,7 @@ public class FoodDetailsDTO  {
     StringBuilder sb = new StringBuilder();
     sb.append("class FoodDetailsDTO {\n");
     
+    sb.append("  category: ").append(category).append("\n");
     sb.append("  id: ").append(id).append("\n");
     sb.append("  title: ").append(title).append("\n");
     sb.append("  description: ").append(description).append("\n");
