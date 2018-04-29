@@ -1,0 +1,226 @@
+swagger: '2.0'
+
+info:
+  title: Cafe Lavilla Food API
+  description: >
+    APIs for handling food in Cafe Lavilla.
+  version: 1.0.0
+schemes:
+  - http
+  - https
+host: localhost
+
+basePath: /lavilla
+
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /menu/categories:
+    get:
+      operationId: getCategories
+      summary: Gets all food categories
+      description: >
+        This API is used to get all food categories
+      tags:
+        - Getting All Food Categories
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Categories'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+  /menu/category:
+    post:
+      operationId: setFoodItem
+      summary: Adds a food item of a given category
+      description: >
+        This API is used to add a food item of a given category
+      tags:
+        - Food Items
+      parameters:
+        - in: body
+          name: body
+          description: "Adding food item"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Error'
+  /menu/category/{id}:
+    put:
+      operationId: updateFoodItem
+      summary: Updates the food item of a given id and a category.
+      description: >
+        This API is used to update a given food item of a given category
+      tags:
+      - Food Items
+      parameters:
+      - in: path
+        name: id
+        description: Id of the food item to be updated.
+        required: true
+        type: integer
+      - in: body
+        name: body
+        description: Details of the food item to be updated.
+        required: true
+        schema:
+          $ref: '#/definitions/FoodDetails'
+      responses:
+        200:
+          description: Updated food item successfully
+        400:
+          description: Invalid food item supplied
+        404:
+          description: Food item not found
+  /menu/{category}/{id}:
+    get:
+      operationId: getFoodItem
+      summary: Get the food item of a given id and a category
+      description: >
+        This API is used to get a food item for the given id and category
+      tags:
+      - Food Items
+      parameters:
+      - in: path
+        name: category
+        description: Category of the food
+        required: true
+        type: string
+      - in: path
+        name: id
+        description: Id of the food item to get
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Successfully obtained the given food item
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: Invalid food id supplied
+        404:
+          description: Supplied food item not found
+    delete:
+      operationId: deleteFoodItem
+      summary: Deletes the given food item of the given category
+      description: >
+        This API is used to delete a given food item of given category
+      tags:
+      - Food Items
+      parameters:
+      - in: path
+        name: category
+        description: Category of the food item
+        required: true
+        type: string
+      - in: path
+        name: id
+        description: Id of the food item to be deleted
+        required: true
+        type: integer
+      responses:
+        200:
+          description: Food item deleted successfully
+        404:
+         description: Food item not found
+definitions:
+  Error:
+    properties:
+      error:
+        type: string
+        description: Invalid input.
+        example: "invalid_request"
+    required:
+      - error
+  Categories:
+    properties:
+      categories:
+        type: array
+        items:
+          $ref: '#/definitions/Category'
+  Category:
+    properties:
+      salad:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      breakfast:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      hotDrinks:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      desserts:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      frenchToast:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      mainCource:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      pancake:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      pastas:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      quenchers:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      starters:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+      waffles:
+        type: array
+        items:
+          $ref: '#/definitions/FoodDetails'
+  FoodDetails:
+    type: object
+    required:
+      - category
+        id
+        title
+        description
+        price
+        imageSource
+    properties:
+      category:
+        type: string
+        example: "salad"
+      id:
+        type: integer
+        example: 1
+      title:
+        type: string
+        example: "Food Name"
+      description:
+        type: string
+        example: "This is the Food Name"
+      price:
+        type: integer
+        example: 100
+      imageSource:
+        type: string
+        example: "https://localhost:8080/image"
