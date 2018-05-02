@@ -1,4 +1,4 @@
-package cafe.lavilla.food.menu.dto;
+package cafe.lavilla.items.menu.dto;
 
 
 import io.swagger.annotations.*;

@@ -1,6 +1,6 @@
-package cafe.lavilla.food.menu.dto;
+package cafe.lavilla.items.menu.dto;
 
-import cafe.lavilla.food.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
 import java.util.ArrayList;
 import java.util.List;
 

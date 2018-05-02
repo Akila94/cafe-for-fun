@@ -1,4 +1,4 @@
-package cafe.lavilla.food.menu;
+package cafe.lavilla.items.menu;
 //comment
 public class ApiException extends Exception{
 	private int code;

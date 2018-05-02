@@ -1,6 +1,6 @@
-package cafe.lavilla.food.menu.factories;
+package cafe.lavilla.items.menu.factories;
 
-import cafe.lavilla.food.menu.MenuApiService;
+import cafe.lavilla.items.menu.MenuApiService;
 import cafe.lavilla.items.menu.impl.MenuApiServiceImpl;
 
 public class MenuApiServiceFactory {
