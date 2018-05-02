@@ -4,12 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+<<<<<<< HEAD
+=======
+    <groupId>cafe-lavilla</groupId>
+    <artifactId>cafe-lavilla</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
+
+>>>>>>> 6b6625f8b0d493458574017efb831d7057379544
     <parent>
         <groupId>org.wso2</groupId>
         <artifactId>wso2</artifactId>
         <version>1</version>
     </parent>
 
+<<<<<<< HEAD
     <groupId>cafe.lavilla.items.menu</groupId>
     <artifactId>cafe.lavilla.items.menu</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -143,4 +152,228 @@
 
 
 
+=======
+    <modules>
+        <module>components/cafe.lavilla.food.menu.core</module>
+        <module>components/cafe.lavilla.food.menu</module>
+    </modules>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </repository>
+        <repository>
+            <id>wso2.snapshots</id>
+            <name>Apache Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>wso2.releases</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/releases/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </pluginRepository>
+
+        <pluginRepository>
+            <id>wso2.snapshots</id>
+            <name>WSO2 Snapshot Repository</name>
+            <url>http://maven.wso2.org/nexus/content/repositories/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </pluginRepository>
+        <pluginRepository>
+            <id>wso2-nexus</id>
+            <name>WSO2 internal Repository</name>
+            <url>http://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>daily</updatePolicy>
+                <checksumPolicy>ignore</checksumPolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-scr-plugin</artifactId>
+                    <version>${apache.maven.scr.plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>generate-scr-scr-descriptor</id>
+                            <goals>
+                                <goal>scr</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-war-plugin</artifactId>
+                    <version>${apache.maven.war.plugin.version}</version>
+
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.felix</groupId>
+                    <artifactId>maven-bundle-plugin</artifactId>
+                    <version>${apache.maven.bundle.plugin.version}</version>
+                    <extensions>true</extensions>
+                    <configuration>
+                        <obrRepository>NONE</obrRepository>
+                        <instructions>
+                            <!--<SCM-Revision>${buildNumber}</SCM-Revision>-->
+                        </instructions>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.wso2.carbon.identity.framework</groupId>
+                <artifactId>org.wso2.carbon.identity.base</artifactId>
+                <version>${identity.framework.base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.connector.java.version}</version>
+                <type>jar</type>
+                <scope>compile</scope>
+            </dependency>
+            <!--<dependency>-->
+                <!--<groupId>org.apache.felix</groupId>-->
+                <!--<artifactId>org.apache.felix.scr.ds-annotations</artifactId>-->
+                <!--<version>${apache.felix.scr.ds.annotation.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.wso2.eclipse.osgi</groupId>-->
+                <!--<artifactId>org.eclipse.osgi.services</artifactId>-->
+                <!--<version>${eclipse.osgi.version}</version>-->
+            <!--</dependency>-->
+            <!--<dependency>-->
+                <!--<groupId>org.wso2.carbon</groupId>-->
+                <!--<artifactId>org.wso2.carbon.core</artifactId>-->
+                <!--<version>${carbon.core.version}</version>-->
+                <!--<exclusions>-->
+                    <!--<exclusion>-->
+                        <!--<groupId>org.wso2.carbon</groupId>-->
+                        <!--<artifactId>org.wso2.carbon.logging</artifactId>-->
+                    <!--</exclusion>-->
+                <!--</exclusions>-->
+            <!--</dependency>-->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.api.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-jaxrs</artifactId>
+                <version>${swagger.jaxrs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.ws.rs</groupId>
+                <artifactId>jsr311-api</artifactId>
+                <version>${javax.ws.rs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework</groupId>
+                <artifactId>spring-web</artifactId>
+                <version>${springframework.web.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+                <version>${apache.cxf.jaxrs.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.cxf</groupId>
+                <artifactId>cxf-rt-rs-service-description</artifactId>
+                <version>${apache.cxf.service.description}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-core-asl</artifactId>
+                <version>${codehaus.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${codehaus.jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-jaxrs</artifactId>
+                <version>${codehaus.jackson.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <properties>
+        <identity.framework.base.version>5.7.5</identity.framework.base.version>
+        <mysql.connector.java.version>5.1.39</mysql.connector.java.version>
+        <slf4j.api.version>1.6.1</slf4j.api.version>
+
+        <!--OSGi properties-->
+        <apache.maven.scr.plugin.version>1.22.0</apache.maven.scr.plugin.version>
+        <apache.maven.bundle.plugin.version>2.4.0</apache.maven.bundle.plugin.version>
+        <apache.felix.scr.ds.annotation.version>1.2.4</apache.felix.scr.ds.annotation.version>
+        <eclipse.osgi.version>3.5.100.v20160504-1419</eclipse.osgi.version>
+        <carbon.core.version>4.4.20</carbon.core.version>
+
+        <!--OSGi import package version reanges-->
+        <slf4j.version.range>[1.7.21, 2.0.0)</slf4j.version.range>
+
+        <apache.maven.war.plugin.version>2.2</apache.maven.war.plugin.version>
+        <swagger.jaxrs.version>1.5.2</swagger.jaxrs.version>
+        <javax.ws.rs.version>1.1.1</javax.ws.rs.version>
+        <springframework.web.version>4.1.6.RELEASE</springframework.web.version>
+        <apache.cxf.jaxrs.version>3.1.7</apache.cxf.jaxrs.version>
+        <apache.cxf.service.description>3.1.7</apache.cxf.service.description>
+        <codehaus.jackson.version>1.8.6</codehaus.jackson.version>
+        <codehaus.jackson.version>1.8.6</codehaus.jackson.version>
+    </properties>
+>>>>>>> 6b6625f8b0d493458574017efb831d7057379544
 </project>
