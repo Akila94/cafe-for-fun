@@ -1,14 +1,15 @@
-package cafe.lavilla.food.menu;
+package cafe.lavilla.items.menu;
 
-import cafe.lavilla.food.menu.dto.*;
-import cafe.lavilla.food.menu.MenuApiService;
-import cafe.lavilla.food.menu.factories.MenuApiServiceFactory;
+import cafe.lavilla.items.menu.dto.*;
+import cafe.lavilla.items.menu.MenuApiService;
+import cafe.lavilla.items.menu.factories.MenuApiServiceFactory;
 
 import io.swagger.annotations.ApiParam;
 
-import cafe.lavilla.food.menu.dto.CategoriesDTO;
-import cafe.lavilla.food.menu.dto.ErrorDTO;
-import cafe.lavilla.food.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.CategoriesDTO;
+import cafe.lavilla.items.menu.dto.ErrorDTO;
+import cafe.lavilla.items.menu.dto.GroupDTO;
+import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
 
 import java.util.List;
 
@@ -57,6 +58,20 @@ public class MenuApi  {
     return delegate.getCategories();
     }
     @GET
+    @Path("/{category}")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Gets all the foods of the provided category", notes = "This API is used to get all the food items of the given category\n", response = GroupDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Successfully obtained food item of given category"),
+        
+        @io.swagger.annotations.ApiResponse(code = 404, message = "Provided category not found") })
+
+    public Response getCategory(@ApiParam(value = "Food category that is needed",required=true ) @PathParam("category")  String category)
+    {
+    return delegate.getCategory(category);
+    }
+    @GET
     @Path("/{category}/{id}")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
@@ -88,7 +103,7 @@ public class MenuApi  {
     return delegate.setFoodItem(body);
     }
     @PUT
-    @Path("/category/{id}")
+    @Path("/category")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
     @io.swagger.annotations.ApiOperation(value = "Updates the food item of a given id and a category.", notes = "This API is used to update a given food item of a given category\n", response = void.class)
@@ -99,10 +114,9 @@ public class MenuApi  {
         
         @io.swagger.annotations.ApiResponse(code = 404, message = "Food item not found") })
 
-    public Response updateFoodItem(@ApiParam(value = "Id of the food item to be updated.",required=true ) @PathParam("id")  Integer id,
-    @ApiParam(value = "Details of the food item to be updated." ,required=true ) FoodDetailsDTO body)
+    public Response updateFoodItem(@ApiParam(value = "Details of the food item to be updated." ,required=true ) FoodDetailsDTO body)
     {
-    return delegate.updateFoodItem(id,body);
+    return delegate.updateFoodItem(body);
     }
 }
 

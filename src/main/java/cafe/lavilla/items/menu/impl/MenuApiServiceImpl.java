@@ -1,14 +1,14 @@
 package cafe.lavilla.items.menu.impl;
 
-import cafe.lavilla.food.menu.ApiResponseMessage;
-import cafe.lavilla.food.menu.MenuApiService;
-import cafe.lavilla.food.menu.dto.ErrorDTO;
+import cafe.lavilla.items.menu.ApiResponseMessage;
+import cafe.lavilla.items.menu.MenuApiService;
 import cafe.lavilla.items.menu.core.dao.impl.FoodItemDAOImpl;
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
 import cafe.lavilla.items.menu.core.model.FoodItem;
-import cafe.lavilla.food.menu.dto.CategoriesDTO;
-import cafe.lavilla.food.menu.dto.CategoryDTO;
-import cafe.lavilla.food.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.CategoriesDTO;
+import cafe.lavilla.items.menu.dto.CategoryDTO;
+import cafe.lavilla.items.menu.dto.ErrorDTO;
+import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -117,6 +117,11 @@ public class MenuApiServiceImpl extends MenuApiService {
         return Response.ok().entity(categoriesDTO).build();
     }
 
+    @Override
+    public Response getCategory(String category) {
+        return null;
+    }
+
     private FoodDetailsDTO setFoodDetailsDTO(FoodItem foodItem) {
         FoodDetailsDTO foodDetailsDTO = new FoodDetailsDTO();
         foodDetailsDTO.setId(foodItem.getId());
@@ -140,7 +145,7 @@ public class MenuApiServiceImpl extends MenuApiService {
             return Response.ok().entity(foodDetailsDTO).header("Access-Control-Allow-Origin", "*").build();
         } catch (FoodItemException e) {
             ErrorDTO errorDTO = new ErrorDTO();
-            errorDTO.setError(e.getErrorCode());
+            errorDTO.setErrorCode(e.getErrorCode());
             errorDTO.setErrorMessage(e.getMessage());
             errorDTO.setErrorCause(e.getCause().getMessage());
             return Response.ok().entity(errorDTO).header("Access-Control-Allow-Origin", "*").build();
@@ -168,8 +173,7 @@ public class MenuApiServiceImpl extends MenuApiService {
     }
 
     @Override
-    public Response updateFoodItem(Integer id, FoodDetailsDTO body) {
-        // do some magic!
-        return Response.ok().entity(new ApiResponseMessage(ApiResponseMessage.OK, "magic!")).build();
+    public Response updateFoodItem(FoodDetailsDTO body) {
+        return null;
     }
 }

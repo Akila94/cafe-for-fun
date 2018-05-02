@@ -57,7 +57,6 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/Error'
-  /menu/category/{id}:
     put:
       operationId: updateFoodItem
       summary: Updates the food item of a given id and a category.
@@ -66,11 +65,6 @@ paths:
       tags:
       - Food Items
       parameters:
-      - in: path
-        name: id
-        description: Id of the food item to be updated.
-        required: true
-        type: integer
       - in: body
         name: body
         description: Details of the food item to be updated.
@@ -84,6 +78,27 @@ paths:
           description: Invalid food item supplied
         404:
           description: Food item not found
+  /menu/{category}:
+    get:
+      operationId: getCategory
+      summary: Gets all the foods of the provided category
+      description: >
+        This API is used to get all the food items of the given category
+      tags:
+      - Food Categories
+      parameters:
+      - in: path
+        name: category
+        description: Food category that is needed
+        type: string
+        required: true
+      responses:
+        200:
+          description: Successfully obtained food item of given category
+          schema:
+            $ref: '#/definitions/Group'
+        404:
+          description: Provided category not found
   /menu/{category}/{id}:
     get:
       operationId: getFoodItem
@@ -137,13 +152,21 @@ paths:
          description: Food item not found
 definitions:
   Error:
-    properties:
-      error:
-        type: string
-        description: Invalid input.
-        example: "invalid_request"
+    type: object
     required:
-      - error
+      - errorCode
+        errorCause
+        errorMessage
+    properties:
+      errorCode:
+        type: string
+        example: '404'
+      errorCause:
+        type: string
+        example: Cause of the error comes here!!
+      errorMessage:
+        type: string
+        example: Error message comes here!!
   Categories:
     properties:
       categories:
@@ -224,3 +247,7 @@ definitions:
       imageSource:
         type: string
         example: "https://localhost:8080/image"
+  Group:
+    type: array
+    items:
+      $ref: '#/definitions/FoodDetails'
