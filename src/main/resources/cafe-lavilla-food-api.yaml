@@ -150,6 +150,50 @@ paths:
           description: Food item deleted successfully
         404:
          description: Food item not found
+  /menu/image/{name}:
+    post:
+      summary: Adds an image for a food item
+      tags:
+        - Image Upload
+      consumes:
+        - multipart/form-data
+
+      description: >
+        This API adds an image to a food item
+      parameters:
+        - in: formData
+          name: image
+          type: file
+          description: The image to be uploaded
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: The name of the image to be uploaded
+      responses:
+        200:
+          description: OK
+    put:
+      summary: Updates the image of a food item
+      tags:
+        - Image Upload
+      consumes:
+        - multipart/form-data
+      description: >
+        This API updates the image of a food item
+      parameters:
+        - in: formData
+          name: image
+          type: file
+          description: The image to be updated
+        - in: path
+          name: name
+          type: string
+          required: true
+          description: The name of the image to be updated
+      responses:
+        200:
+          description: OK
 definitions:
   Error:
     type: object
@@ -251,4 +295,3 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/FoodDetails'
-      
