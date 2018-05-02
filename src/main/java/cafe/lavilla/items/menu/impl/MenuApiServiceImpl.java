@@ -2,6 +2,7 @@ package cafe.lavilla.items.menu.impl;
 
 import cafe.lavilla.food.menu.ApiResponseMessage;
 import cafe.lavilla.food.menu.MenuApiService;
+import cafe.lavilla.food.menu.dto.ErrorDTO;
 import cafe.lavilla.items.menu.core.dao.impl.FoodItemDAOImpl;
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
 import cafe.lavilla.items.menu.core.model.FoodItem;
@@ -22,31 +23,6 @@ public class MenuApiServiceImpl extends MenuApiService {
 
     @Override
     public Response getCategories() {
-//        FoodItemDAOImpl foodItemDAO = new FoodItemDAOImpl();
-//        CategoriesDTO categoriesDTO = new CategoriesDTO();
-//        List<CategoryDTO> categoryDTOS = new ArrayList<>();
-//        CategoryDTO categoryDTO = new CategoryDTO();
-//        try {
-//            List allItems = foodItemDAO.getAllItems();
-//            for (Object allItem : allItems) {
-//                List<FoodItem> foodItems = (List<FoodItem>) allItem;
-//                List<FoodDetailsDTO> foodDetailsDTOS = new ArrayList<>();
-//                for (FoodItem foodItem : foodItems) {
-//                    FoodDetailsDTO foodDetailsDTO = new FoodDetailsDTO();
-//                    foodDetailsDTO.setId(foodItem.getId());
-//                    foodDetailsDTO.setTitle(foodItem.getName());
-//                    foodDetailsDTO.setDescription(foodItem.getDescription());
-//                    foodDetailsDTO.setPrice(foodItem.getPrice());
-//                    foodDetailsDTO.setImageSource(foodItem.getImgLocation());
-//                    foodDetailsDTOS.add(foodDetailsDTO);
-//                }
-//                categoryDTO.setSalad(foodDetailsDTOS);
-//                categoryDTOS.add(categoryDTO);
-//            }
-//            categoriesDTO.setCategories(categoryDTOS);
-//        } catch (FoodItemException e) {
-//            e.printStackTrace();
-//        }
 
         FoodItemDAOImpl foodItemDAO = new FoodItemDAOImpl();
         CategoriesDTO categoriesDTO = new CategoriesDTO();
@@ -161,10 +137,14 @@ public class MenuApiServiceImpl extends MenuApiService {
             foodDetailsDTO.setTitle(foodItem.getName());
             foodDetailsDTO.setDescription(foodItem.getDescription());
             foodDetailsDTO.setPrice(foodItem.getPrice());
+            return Response.ok().entity(foodDetailsDTO).header("Access-Control-Allow-Origin", "*").build();
         } catch (FoodItemException e) {
-            e.printStackTrace();
+            ErrorDTO errorDTO = new ErrorDTO();
+            errorDTO.setError(e.getErrorCode());
+            errorDTO.setErrorMessage(e.getMessage());
+            errorDTO.setErrorCause(e.getCause().getMessage());
+            return Response.ok().entity(errorDTO).header("Access-Control-Allow-Origin", "*").build();
         }
-        return Response.ok().entity(foodDetailsDTO).header("Access-Control-Allow-Origin", "*").build();
     }
 
     @Override

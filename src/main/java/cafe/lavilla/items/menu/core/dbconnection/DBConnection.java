@@ -16,7 +16,7 @@ public class DBConnection {
         String pw = "root";
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/CAFE_LAVILLA_FOODS_DB",
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/cafe_lavilla_foods_db",
                     "root", pw);
         } catch (Exception e) {
             throw new FoodItemException(
