@@ -4,11 +4,9 @@ import cafe.lavilla.items.menu.ApiResponseMessage;
 import cafe.lavilla.items.menu.MenuApiService;
 import cafe.lavilla.items.menu.core.dao.impl.FoodItemDAOImpl;
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
+import cafe.lavilla.items.menu.core.imageconverter.ImageDecoder;
 import cafe.lavilla.items.menu.core.model.FoodItem;
-import cafe.lavilla.items.menu.dto.CategoriesDTO;
-import cafe.lavilla.items.menu.dto.CategoryDTO;
-import cafe.lavilla.items.menu.dto.ErrorDTO;
-import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.*;
 import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 
 import javax.ws.rs.core.Response;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuApiServiceImpl extends MenuApiService {
+
     @Override
     public Response deleteFoodItem(String category, Integer id) {
         // do some magic!
@@ -121,10 +120,32 @@ public class MenuApiServiceImpl extends MenuApiService {
 
     @Override
     public Response getCategory(String category) {
-        return null;
+
+        FoodItemDAOImpl foodItemDAO = new FoodItemDAOImpl();
+        try {
+            List<FoodItem> foodItemList = foodItemDAO.getItemsByCategory(category);
+            GroupDTO groupDTO = new GroupDTO();
+            for (int i = 0; i < foodItemList.size(); i++) {
+                FoodDetailsDTO foodDetailsDTO = new FoodDetailsDTO();
+                foodDetailsDTO.setId(foodItemList.get(i).getId());
+                foodDetailsDTO.setTitle(foodItemList.get(i).getName());
+                foodDetailsDTO.setDescription(foodItemList.get(i).getDescription());
+                foodDetailsDTO.setPrice(foodItemList.get(i).getPrice());
+                foodDetailsDTO.setImageSource(foodItemList.get(i).getImgLocation());
+                groupDTO.add(foodDetailsDTO);
+            }
+            return Response.ok().entity(groupDTO).header("Access-Control-Allow-Origin", "*").build();
+        } catch (FoodItemException e) {
+            ErrorDTO errorDTO = new ErrorDTO();
+            errorDTO.setErrorCode(e.getErrorCode());
+            errorDTO.setErrorMessage(e.getMessage());
+            errorDTO.setErrorCause(e.getCause().getMessage());
+            return Response.ok().entity(errorDTO).header("Access-Control-Allow-Origin", "*").build();
+        }
     }
 
     private FoodDetailsDTO setFoodDetailsDTO(FoodItem foodItem) {
+
         FoodDetailsDTO foodDetailsDTO = new FoodDetailsDTO();
         foodDetailsDTO.setId(foodItem.getId());
         foodDetailsDTO.setTitle(foodItem.getName());
@@ -136,6 +157,7 @@ public class MenuApiServiceImpl extends MenuApiService {
 
     @Override
     public Response getFoodItem(String category, Integer id) {
+
         FoodItemDAOImpl foodItemDAO = new FoodItemDAOImpl();
         FoodDetailsDTO foodDetailsDTO = new FoodDetailsDTO();
         try {
@@ -156,16 +178,29 @@ public class MenuApiServiceImpl extends MenuApiService {
 
     @Override
     public Response menuImageNamePost(String name, InputStream imageInputStream, Attachment imageDetail) {
-        return null;
+
+        ImageDecoder imageDecoder = new ImageDecoder();
+        try {
+            imageDecoder.saveImage(imageInputStream, name);
+            return Response.ok().header("Access-Control-Allow-Origin", "*").build();
+        } catch (FoodItemException e) {
+            ErrorDTO errorDTO = new ErrorDTO();
+            errorDTO.setErrorCode(e.getErrorCode());
+            errorDTO.setErrorMessage(e.getMessage());
+            errorDTO.setErrorCause(e.getCause().getMessage());
+            return Response.serverError().entity(errorDTO).header("Access-Control-Allow-Origin", "*").build();
+        }
     }
 
     @Override
     public Response menuImageNamePut(String name, InputStream imageInputStream, Attachment imageDetail) {
+
         return null;
     }
 
     @Override
     public Response setFoodItem(FoodDetailsDTO body) {
+
         FoodItem foodItem = new FoodItem();
         FoodItem addedFoodItem = null;
         foodItem.setCategory(body.getCategory());
@@ -186,6 +221,7 @@ public class MenuApiServiceImpl extends MenuApiService {
 
     @Override
     public Response updateFoodItem(FoodDetailsDTO body) {
+
         return null;
     }
 }
