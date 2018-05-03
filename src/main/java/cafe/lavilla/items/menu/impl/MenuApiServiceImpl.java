@@ -9,8 +9,10 @@ import cafe.lavilla.items.menu.dto.CategoriesDTO;
 import cafe.lavilla.items.menu.dto.CategoryDTO;
 import cafe.lavilla.items.menu.dto.ErrorDTO;
 import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
+import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -150,6 +152,16 @@ public class MenuApiServiceImpl extends MenuApiService {
             errorDTO.setErrorCause(e.getCause().getMessage());
             return Response.ok().entity(errorDTO).header("Access-Control-Allow-Origin", "*").build();
         }
+    }
+
+    @Override
+    public Response menuImageNamePost(String name, InputStream imageInputStream, Attachment imageDetail) {
+        return null;
+    }
+
+    @Override
+    public Response menuImageNamePut(String name, InputStream imageInputStream, Attachment imageDetail) {
+        return null;
     }
 
     @Override
