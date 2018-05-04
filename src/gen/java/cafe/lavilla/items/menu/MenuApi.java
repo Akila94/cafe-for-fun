@@ -6,10 +6,11 @@ import cafe.lavilla.items.menu.factories.MenuApiServiceFactory;
 
 import io.swagger.annotations.ApiParam;
 
-import cafe.lavilla.items.menu.dto.CategoriesDTO;
+import cafe.lavilla.items.menu.dto.CategoryDTO;
 import cafe.lavilla.items.menu.dto.ErrorDTO;
 import cafe.lavilla.items.menu.dto.GroupDTO;
 import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.SuccessDTO;
 import java.io.File;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class MenuApi  {
     @Path("/categories")
     @Consumes({ "application/json" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "Gets all food categories", notes = "This API is used to get all food categories\n", response = CategoriesDTO.class)
+    @io.swagger.annotations.ApiOperation(value = "Gets all food categories", notes = "This API is used to get all food categories\n", response = CategoryDTO.class)
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
         
@@ -93,9 +94,9 @@ public class MenuApi  {
     @Path("/image/{name}")
     @Consumes({ "multipart/form-data" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "Adds an image for a food item", notes = "This API adds an image to a food item\n", response = void.class)
+    @io.swagger.annotations.ApiOperation(value = "Adds an image for a food item", notes = "This API adds an image to a food item\n", response = SuccessDTO.class)
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK") })
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Success") })
 
     public Response menuImageNamePost(@ApiParam(value = "The name of the image to be uploaded",required=true ) @PathParam("name")  String name,
     @ApiParam(value = "The image to be uploaded") @Multipart(value = "image", required = false) InputStream imageInputStream,
@@ -107,9 +108,9 @@ public class MenuApi  {
     @Path("/image/{name}")
     @Consumes({ "multipart/form-data" })
     @Produces({ "application/json" })
-    @io.swagger.annotations.ApiOperation(value = "Updates the image of a food item", notes = "This API updates the image of a food item\n", response = void.class)
+    @io.swagger.annotations.ApiOperation(value = "Updates the image of a food item", notes = "This API updates the image of a food item\n", response = SuccessDTO.class)
     @io.swagger.annotations.ApiResponses(value = { 
-        @io.swagger.annotations.ApiResponse(code = 200, message = "OK") })
+        @io.swagger.annotations.ApiResponse(code = 200, message = "Success") })
 
     public Response menuImageNamePut(@ApiParam(value = "The name of the image to be updated",required=true ) @PathParam("name")  String name,
     @ApiParam(value = "The image to be updated") @Multipart(value = "image", required = false) InputStream imageInputStream,

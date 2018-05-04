@@ -3,10 +3,11 @@ package cafe.lavilla.items.menu;
 import cafe.lavilla.items.menu.*;
 import cafe.lavilla.items.menu.dto.*;
 
-import cafe.lavilla.items.menu.dto.CategoriesDTO;
+import cafe.lavilla.items.menu.dto.CategoryDTO;
 import cafe.lavilla.items.menu.dto.ErrorDTO;
 import cafe.lavilla.items.menu.dto.GroupDTO;
 import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
+import cafe.lavilla.items.menu.dto.SuccessDTO;
 import java.io.File;
 
 import java.util.List;

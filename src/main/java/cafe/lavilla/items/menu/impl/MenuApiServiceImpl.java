@@ -37,85 +37,85 @@ public class MenuApiServiceImpl extends MenuApiService {
             for (FoodItem foodItem : foodItemList) {
                 breakfastItems.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setBreakfast(breakfastItems);
+            categoriesDTO.setBreakfast(breakfastItems);
 
             foodItemList = foodItemDAO.getItemsByCategory("Hot Drinks");
             List<FoodDetailsDTO> hotDrinks = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 hotDrinks.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setHotDrinks(hotDrinks);
+            categoriesDTO.setHotDrinks(hotDrinks);
 
             foodItemList = foodItemDAO.getItemsByCategory("Desserts");
             List<FoodDetailsDTO> desserts = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 desserts.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setDesserts(desserts);
+            categoriesDTO.setDesserts(desserts);
 
             foodItemList = foodItemDAO.getItemsByCategory("French Toast");
             List<FoodDetailsDTO> frenchToasts = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 frenchToasts.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setFrenchToast(frenchToasts);
+            categoriesDTO.setFrenchToast(frenchToasts);
 
             foodItemList = foodItemDAO.getItemsByCategory("Main Course");
             List<FoodDetailsDTO> mainCourse = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 mainCourse.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setMainCource(mainCourse);
+            categoriesDTO.setMainCource(mainCourse);
 
             foodItemList = foodItemDAO.getItemsByCategory("Pancakes");
             List<FoodDetailsDTO> pancakes = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 pancakes.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setPancake(pancakes);
+            categoriesDTO.setPancake(pancakes);
 
             foodItemList = foodItemDAO.getItemsByCategory("Pasta");
             List<FoodDetailsDTO> pastas = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 pastas.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setPastas(pastas);
+            categoriesDTO.setPastas(pastas);
 
             foodItemList = foodItemDAO.getItemsByCategory("Quenchers");
             List<FoodDetailsDTO> quenchers = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 quenchers.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setQuenchers(quenchers);
+            categoriesDTO.setQuenchers(quenchers);
 
             foodItemList = foodItemDAO.getItemsByCategory("Salads");
             List<FoodDetailsDTO> salads = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 salads.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setSalad(salads);
+            categoriesDTO.setSalad(salads);
 
             foodItemList = foodItemDAO.getItemsByCategory("Starters");
             List<FoodDetailsDTO> starters = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 starters.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setStarters(starters);
+            categoriesDTO.setStarters(starters);
 
             foodItemList = foodItemDAO.getItemsByCategory("Waffles");
             List<FoodDetailsDTO> waffles = new ArrayList<>();
             for (FoodItem foodItem : foodItemList) {
                 waffles.add(setFoodDetailsDTO(foodItem));
             }
-            categoryDTO.setWaffles(waffles);
+            categoriesDTO.setWaffles(waffles);
 
             categoryDTOList.add(categoryDTO);
-            categoriesDTO.setCategories(categoryDTOList);
+//            categoriesDTO.setCategories(categoryDTOList);
         } catch (FoodItemException e) {
             e.printStackTrace();
         }
 
-        return Response.ok().entity(categoriesDTO).build();
+        return Response.ok().entity(categoryDTOList).build();
     }
 
     @Override
