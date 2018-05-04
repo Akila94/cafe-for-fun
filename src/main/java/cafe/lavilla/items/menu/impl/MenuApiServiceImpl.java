@@ -177,7 +177,7 @@ public class MenuApiServiceImpl extends MenuApiService {
     }
 
     @Override
-    public Response menuImageNamePost(String name, InputStream imageInputStream, Attachment imageDetail) {
+    public Response menuImageUploadTmpPost(String name, InputStream imageInputStream, Attachment imageDetail) {
 
         ImageDecoder imageDecoder = new ImageDecoder();
         try {
@@ -193,7 +193,7 @@ public class MenuApiServiceImpl extends MenuApiService {
     }
 
     @Override
-    public Response menuImageNamePut(String name, InputStream imageInputStream, Attachment imageDetail) {
+    public Response menuImageUploadTmpPut(String name, InputStream imageInputStream, Attachment imageDetail) {
 
         return null;
     }

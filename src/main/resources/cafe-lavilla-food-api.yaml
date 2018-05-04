@@ -150,7 +150,7 @@ paths:
           description: Food item deleted successfully
         404:
          description: Food item not found
-  /menu/image/{name}:
+  /menu/image/upload/tmp:
     post:
       summary: Adds an image for a food item
       tags:
@@ -174,7 +174,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/Success'
+            $ref: '#/definitions/Image'
     put:
       summary: Updates the image of a food item
       tags:
@@ -309,3 +309,11 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/FoodDetails'
+  Image:
+    type: object
+    required:
+      - imageUrl
+    properties:
+      imageUrl:
+        type: string
+        example: localhost:8080/image/soup.jpg
