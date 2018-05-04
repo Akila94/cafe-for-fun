@@ -29,7 +29,7 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/Categories'
+            $ref: '#/definitions/Category'
         '400':
           description: Bad Request
           schema:
@@ -150,7 +150,7 @@ paths:
           description: Food item deleted successfully
         404:
          description: Food item not found
-  /menu/image/{name}:
+  /menu/image/upload/tmp:
     post:
       summary: Adds an image for a food item
       tags:
@@ -173,6 +173,8 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/Image'
     put:
       summary: Updates the image of a food item
       tags:
@@ -194,7 +196,21 @@ paths:
       responses:
         200:
           description: OK
+          schema:
+            $ref: '#/definitions/Success'
 definitions:
+  Success:
+    type: object
+    required:
+      - successMessage
+        successCode
+    properties:
+      succassMessage:
+        type: string
+        example: Success
+      successCode:
+        type: integer
+        example: 200
   Error:
     type: object
     required:
@@ -211,13 +227,11 @@ definitions:
       errorMessage:
         type: string
         example: Error message comes here!!
-  Categories:
+  Category:
     properties:
       categories:
-        type: array
-        items:
-          $ref: '#/definitions/Category'
-  Category:
+        $ref: '#/definitions/Categories'
+  Categories:
     properties:
       salad:
         type: array
@@ -295,3 +309,11 @@ definitions:
     type: array
     items:
       $ref: '#/definitions/FoodDetails'
+  Image:
+    type: object
+    required:
+      - imageUrl
+    properties:
+      imageUrl:
+        type: string
+        example: localhost:8080/image/soup.jpg
