@@ -78,6 +78,28 @@ paths:
           description: Invalid food item supplied
         404:
           description: Food item not found
+
+  /menu/item/configuration:
+    post:
+      summary: "Add items"
+      description: "Adding food item details to the database"
+      parameters:
+        - in: "body"
+          name: "foodItem"
+          description: "Details of the food item to be stored in database"
+          required: true
+          schema:
+            $ref: '#/definitions/FoodDetails'
+      responses:
+        201:
+          description: "Successfully added the food item to the database"
+          schema:
+            $ref: '#/definitions/FoodDetails'
+        400:
+          description: "Bad request"
+          schema:
+            $ref: '#/definitions/Error'
+
   /menu/{category}:
     get:
       operationId: getCategory
@@ -165,11 +187,11 @@ paths:
           name: image
           type: file
           description: The image to be uploaded
-        - in: path
-          name: name
-          type: string
-          required: true
-          description: The name of the image to be uploaded
+#        - in: path
+#          name: name
+#          type: string
+#          required: true
+#          description: The name of the image to be uploaded
       responses:
         200:
           description: OK
@@ -188,16 +210,103 @@ paths:
           name: image
           type: file
           description: The image to be updated
-        - in: path
-          name: name
-          type: string
-          required: true
-          description: The name of the image to be updated
+#        - in: path
+#          name: name
+#          type: string
+#          required: true
+#          description: The name of the image to be updated
       responses:
         200:
           description: OK
           schema:
             $ref: '#/definitions/Success'
+
+  /menu/items/categories:
+    post:
+      summary: Add a item category
+      parameters:
+        - in: body
+          name: category
+          required: true
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+        400:
+          description: invalid category type
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update a item category
+      parameters:
+        - in: body
+          name: category
+          required: true
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    delete:
+      summary: Delete a item category
+      parameters:
+        - in: body
+          name: category
+          required: true
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/CategoryDetails'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      summary: Get all the categories
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              categoryList:
+                type: array
+                items:
+                  $ref: '#/definitions/CategoryDetails'
+                required:
+                  - categoryList
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+
 definitions:
   Success:
     type: object
@@ -317,3 +426,18 @@ definitions:
       imageUrl:
         type: string
         example: localhost:8080/image/soup.jpg
+      imageName:
+        type: string
+        example: test.jpeg
+
+  CategoryDetails:
+    type: object
+    required:
+      - categoryName
+    properties:
+      categoryId:
+        type: integer
+        example: 1
+      categoryName:
+        type: string
+        example: "Salads"

@@ -6,8 +6,10 @@ import cafe.lavilla.items.menu.core.constants.SQLQueries;
  * Created by Shan Chathusanda on 4/24/2018.
  */
 public class QueryFilters {
+
     public static String[] filterInsertQuery(String category) {
-        String[] queries = new String[2];
+
+        String[] queries = new String[3];
 
         switch (category) {
             case "Breakfast":
@@ -45,6 +47,7 @@ public class QueryFilters {
             case "Salads":
                 queries[0] = SQLQueries.INSERT_SALAD_ITEM_QUERY;
                 queries[1] = SQLQueries.GET_LAST_INSERTED_SALAD_ID_QUERY;
+                queries[2] = SQLQueries.INSERT_SALAD_IMAGE_QUERY;
                 break;
             case "Starters":
                 queries[0] = SQLQueries.INSERT_STARTERS_QUERY;
@@ -59,6 +62,7 @@ public class QueryFilters {
     }
 
     public static String filterUpdateQuery(String category) {
+
         String updateQuery = null;
 
         switch (category) {
@@ -100,6 +104,7 @@ public class QueryFilters {
     }
 
     public static String filterDeleteQuery(String category) {
+
         String deleteQuery = null;
 
         switch (category) {
@@ -141,6 +146,7 @@ public class QueryFilters {
     }
 
     public static String filterGetQuery(String category) {
+
         String getQuery = null;
 
         switch (category) {
@@ -182,6 +188,7 @@ public class QueryFilters {
     }
 
     public static String filterGetAllQuery(String category) {
+
         String getAllQuery = null;
 
         switch (category) {

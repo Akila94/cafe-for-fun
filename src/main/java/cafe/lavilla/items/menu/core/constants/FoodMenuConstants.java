@@ -10,7 +10,7 @@ public class FoodMenuConstants {
     public enum ErrorMessages {
         ERROR_MESSAGE_ADD_SALAD_ITEM_FAILURE("CL_1001", "Database error. Could not add the salad item to the database" +
                 "."),
-        ERROR_MESSAGE_GET_SALAD_ITEMS_FAILURE("CL_1002", "Database error. Could not get the salad items."),
+        ERROR_MESSAGE_GET_CATEGORIES_FAILURE("CL_1002", "Database error. Could not get the categories."),
         ERROR_MESSAGE_DELETE_SALAD_ITEM_FAILURE("CL_1004", "Database error. Could not delete the salad item."),
         ERROR_MESSAGE_UPDATE_SALAD_ITEM_FAILURE("CL_1005", "Database error. Could not update the salad item."),
         ERROR_MESSAGE_DELETE_SALAD_IMAGE_FAILURE("CL_1006", "Database error. Could not delete the image of the salad " +
