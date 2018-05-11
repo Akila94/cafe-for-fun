@@ -13,6 +13,7 @@ import cafe.lavilla.items.menu.dto.FoodDetailsDTO;
 import cafe.lavilla.items.menu.dto.ImageDTO;
 import java.io.File;
 import cafe.lavilla.items.menu.dto.SuccessDTO;
+import cafe.lavilla.items.menu.dto.CategoryDetailsDTO;
 
 import java.util.List;
 
@@ -99,11 +100,10 @@ public class MenuApi  {
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK") })
 
-    public Response menuImageUploadTmpPost(@ApiParam(value = "The name of the image to be uploaded",required=true ) @PathParam("name")  String name,
-    @ApiParam(value = "The image to be uploaded") @Multipart(value = "image", required = false) InputStream imageInputStream,
+    public Response menuImageUploadTmpPost(@ApiParam(value = "The image to be uploaded") @Multipart(value = "image", required = false) InputStream imageInputStream,
     @ApiParam(value = "The image to be uploaded : details") @Multipart(value = "image" , required = false) Attachment imageDetail)
     {
-    return delegate.menuImageUploadTmpPost(name,imageInputStream,imageDetail);
+    return delegate.menuImageUploadTmpPost(imageInputStream,imageDetail);
     }
     @PUT
     @Path("/image/upload/tmp")
@@ -113,11 +113,88 @@ public class MenuApi  {
     @io.swagger.annotations.ApiResponses(value = { 
         @io.swagger.annotations.ApiResponse(code = 200, message = "OK") })
 
-    public Response menuImageUploadTmpPut(@ApiParam(value = "The name of the image to be updated",required=true ) @PathParam("name")  String name,
-    @ApiParam(value = "The image to be updated") @Multipart(value = "image", required = false) InputStream imageInputStream,
+    public Response menuImageUploadTmpPut(@ApiParam(value = "The image to be updated") @Multipart(value = "image", required = false) InputStream imageInputStream,
     @ApiParam(value = "The image to be updated : details") @Multipart(value = "image" , required = false) Attachment imageDetail)
     {
-    return delegate.menuImageUploadTmpPut(name,imageInputStream,imageDetail);
+    return delegate.menuImageUploadTmpPut(imageInputStream,imageDetail);
+    }
+    @POST
+    @Path("/item/configuration")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Add items", notes = "Adding food item details to the database", response = FoodDetailsDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 201, message = "Successfully added the food item to the database"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad request") })
+
+    public Response menuItemConfigurationPost(@ApiParam(value = "Details of the food item to be stored in database" ,required=true ) FoodDetailsDTO foodItem)
+    {
+    return delegate.menuItemConfigurationPost(foodItem);
+    }
+    @DELETE
+    @Path("/items/categories")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Delete a item category", notes = "", response = CategoryDetailsDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad request"),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error") })
+
+    public Response menuItemsCategoriesDelete(@ApiParam(value = "" ,required=true ) CategoryDetailsDTO category)
+    {
+    return delegate.menuItemsCategoriesDelete(category);
+    }
+    @GET
+    @Path("/items/categories")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Get all the categories", notes = "", response = Object.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad request"),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error") })
+
+    public Response menuItemsCategoriesGet()
+    {
+    return delegate.menuItemsCategoriesGet();
+    }
+    @POST
+    @Path("/items/categories")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Add a item category", notes = "", response = CategoryDetailsDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "invalid category type"),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "internal server error") })
+
+    public Response menuItemsCategoriesPost(@ApiParam(value = "" ,required=true ) CategoryDetailsDTO category)
+    {
+    return delegate.menuItemsCategoriesPost(category);
+    }
+    @PUT
+    @Path("/items/categories")
+    @Consumes({ "application/json" })
+    @Produces({ "application/json" })
+    @io.swagger.annotations.ApiOperation(value = "Update a item category", notes = "", response = CategoryDetailsDTO.class)
+    @io.swagger.annotations.ApiResponses(value = { 
+        @io.swagger.annotations.ApiResponse(code = 200, message = "OK"),
+        
+        @io.swagger.annotations.ApiResponse(code = 400, message = "Bad request"),
+        
+        @io.swagger.annotations.ApiResponse(code = 500, message = "Internal server error") })
+
+    public Response menuItemsCategoriesPut(@ApiParam(value = "" ,required=true ) CategoryDetailsDTO category)
+    {
+    return delegate.menuItemsCategoriesPut(category);
     }
     @POST
     @Path("/category")

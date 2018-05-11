@@ -16,6 +16,9 @@ public class ImageDTO  {
   
   @NotNull
   private String imageUrl = null;
+  
+  
+  private String imageName = null;
 
   
   /**
@@ -30,6 +33,18 @@ public class ImageDTO  {
   }
 
   
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("imageName")
+  public String getImageName() {
+    return imageName;
+  }
+  public void setImageName(String imageName) {
+    this.imageName = imageName;
+  }
+
+  
 
   @Override
   public String toString()  {
@@ -37,6 +52,7 @@ public class ImageDTO  {
     sb.append("class ImageDTO {\n");
     
     sb.append("  imageUrl: ").append(imageUrl).append("\n");
+    sb.append("  imageName: ").append(imageName).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

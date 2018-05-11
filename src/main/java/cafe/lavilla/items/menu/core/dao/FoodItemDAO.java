@@ -1,6 +1,7 @@
 package cafe.lavilla.items.menu.core.dao;
 
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
+import cafe.lavilla.items.menu.core.model.Category;
 import cafe.lavilla.items.menu.core.model.FoodItem;
 
 import java.util.List;
@@ -15,4 +16,5 @@ public interface FoodItemDAO {
     public FoodItem getItem(String category, int breakfastId) throws FoodItemException;
     public List<FoodItem> getAllItems() throws FoodItemException;
     public List<FoodItem> getItemsByCategory(String category) throws FoodItemException;
+    public List<Category> getAllCategories() throws FoodItemException;
 }
