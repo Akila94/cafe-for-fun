@@ -12,15 +12,15 @@ import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "")
 public class CategoryDetailsDTO  {
-  
-  
-  
+
+
+
   private Integer categoryId = null;
-  
+
   @NotNull
   private String categoryName = null;
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -32,7 +32,7 @@ public class CategoryDetailsDTO  {
     this.categoryId = categoryId;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(required = true, value = "")
@@ -44,13 +44,13 @@ public class CategoryDetailsDTO  {
     this.categoryName = categoryName;
   }
 
-  
+
 
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class CategoryDetailsDTO {\n");
-    
+
     sb.append("  categoryId: ").append(categoryId).append("\n");
     sb.append("  categoryName: ").append(categoryName).append("\n");
     sb.append("}\n");

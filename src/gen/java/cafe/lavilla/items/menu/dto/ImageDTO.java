@@ -12,15 +12,15 @@ import javax.validation.constraints.NotNull;
 
 @ApiModel(description = "")
 public class ImageDTO  {
-  
-  
+
+
   @NotNull
   private String imageUrl = null;
-  
-  
+
+
   private String imageName = null;
 
-  
+
   /**
    **/
   @ApiModelProperty(required = true, value = "")
@@ -32,7 +32,7 @@ public class ImageDTO  {
     this.imageUrl = imageUrl;
   }
 
-  
+
   /**
    **/
   @ApiModelProperty(value = "")
@@ -44,13 +44,13 @@ public class ImageDTO  {
     this.imageName = imageName;
   }
 
-  
+
 
   @Override
   public String toString()  {
     StringBuilder sb = new StringBuilder();
     sb.append("class ImageDTO {\n");
-    
+
     sb.append("  imageUrl: ").append(imageUrl).append("\n");
     sb.append("  imageName: ").append(imageName).append("\n");
     sb.append("}\n");

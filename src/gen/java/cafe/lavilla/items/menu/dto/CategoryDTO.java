@@ -1,6 +1,8 @@
 package cafe.lavilla.items.menu.dto;
 
 import cafe.lavilla.items.menu.dto.CategoriesDTO;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.swagger.annotations.*;
 import com.fasterxml.jackson.annotation.*;
@@ -16,18 +18,18 @@ public class CategoryDTO  {
   
   
   
-  private CategoriesDTO categories = null;
+  private List<CategoriesDTO> itemsByCategory = new ArrayList<CategoriesDTO>();
 
   
   /**
    **/
   @ApiModelProperty(value = "")
-  @JsonProperty("categories")
-  public CategoriesDTO getCategories() {
-    return categories;
+  @JsonProperty("itemsByCategory")
+  public List<CategoriesDTO> getItemsByCategory() {
+    return itemsByCategory;
   }
-  public void setCategories(CategoriesDTO categories) {
-    this.categories = categories;
+  public void setItemsByCategory(List<CategoriesDTO> itemsByCategory) {
+    this.itemsByCategory = itemsByCategory;
   }
 
   
@@ -37,7 +39,7 @@ public class CategoryDTO  {
     StringBuilder sb = new StringBuilder();
     sb.append("class CategoryDTO {\n");
     
-    sb.append("  categories: ").append(categories).append("\n");
+    sb.append("  itemsByCategory: ").append(itemsByCategory).append("\n");
     sb.append("}\n");
     return sb.toString();
   }

@@ -9,128 +9,128 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(description = "")
 public class FoodDetailsDTO {
 
-    private Integer categoryId = null;
+  private Integer categoryId = null;
 
-    private String category = null;
+  private String category = null;
 
-    private Integer itemId = null;
-
-
-    private String title = null;
+  private Integer itemId = null;
 
 
-    private String description = null;
+  private String title = null;
 
 
-    private Float price = null;
+  private String description = null;
 
 
-    private String imageSource = null;
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("categoryId")
-    public Integer getCategoryId() {
-        return categoryId;
-    }
-
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
+  private Float price = null;
 
 
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("category")
-    public String getCategory() {
-        return category;
-    }
+  private String imageSource = null;
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("categoryId")
+  public Integer getCategoryId() {
+    return categoryId;
+  }
 
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("itemId")
-    public Integer getItemId() {
-        return itemId;
-    }
-
-    public void setItemId(Integer itemId) {
-        this.itemId = itemId;
-    }
+  public void setCategoryId(Integer categoryId) {
+    this.categoryId = categoryId;
+  }
 
 
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("title")
-    public String getTitle() {
-        return title;
-    }
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("category")
+  public String getCategory() {
+    return category;
+  }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("description")
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+  public void setCategory(String category) {
+    this.category = category;
+  }
 
 
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("price")
-    public Float getPrice() {
-        return price;
-    }
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("itemId")
+  public Integer getItemId() {
+    return itemId;
+  }
 
-    public void setPrice(float price) {
-        this.price = price;
-    }
-
-
-    /**
-     **/
-    @ApiModelProperty(value = "")
-    @JsonProperty("imageSource")
-    public String getImageSource() {
-        return imageSource;
-    }
-
-    public void setImageSource(String imageSource) {
-        this.imageSource = imageSource;
-    }
+  public void setItemId(Integer itemId) {
+    this.itemId = itemId;
+  }
 
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class FoodDetailsDTO {\n");
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("title")
+  public String getTitle() {
+    return title;
+  }
 
-        sb.append("  categoryId: ").append(categoryId).append("\n");
-        sb.append("  category: ").append(category).append("\n");
-        sb.append("  itemId: ").append(itemId).append("\n");
-        sb.append("  title: ").append(title).append("\n");
-        sb.append("  description: ").append(description).append("\n");
-        sb.append("  price: ").append(price).append("\n");
-        sb.append("  imageSource: ").append(imageSource).append("\n");
-        sb.append("}\n");
-        return sb.toString();
-    }
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("description")
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("price")
+  public Float getPrice() {
+    return price;
+  }
+
+  public void setPrice(float price) {
+    this.price = price;
+  }
+
+
+  /**
+   **/
+  @ApiModelProperty(value = "")
+  @JsonProperty("imageSource")
+  public String getImageSource() {
+    return imageSource;
+  }
+
+  public void setImageSource(String imageSource) {
+    this.imageSource = imageSource;
+  }
+
+
+  @Override
+  public String toString() {
+    StringBuilder sb = new StringBuilder();
+    sb.append("class FoodDetailsDTO {\n");
+
+    sb.append("  categoryId: ").append(categoryId).append("\n");
+    sb.append("  category: ").append(category).append("\n");
+    sb.append("  itemId: ").append(itemId).append("\n");
+    sb.append("  title: ").append(title).append("\n");
+    sb.append("  description: ").append(description).append("\n");
+    sb.append("  price: ").append(price).append("\n");
+    sb.append("  imageSource: ").append(imageSource).append("\n");
+    sb.append("}\n");
+    return sb.toString();
+  }
 }
