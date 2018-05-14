@@ -224,8 +224,33 @@ paths:
             $ref: '#/definitions/Success'
 
   /menu/items/categories:
+    get:
+      summary: Get all the categories
+      description: >
+        This API gets all the categories
+      tags:
+        -  Food Categories
+      responses:
+        200:
+          description: OK
+          schema:
+            properties:
+              categoryList:
+                type: array
+                items:
+                  $ref: '#/definitions/CategoryDetails'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
     post:
-      summary: Add a item category
+      summary: Add an item category
+      tags:
+        -  Food Categories
       parameters:
         - in: body
           name: category
@@ -246,7 +271,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     put:
-      summary: Update a item category
+      summary: Update an item category
+      tags:
+        -  Food Categories
       parameters:
         - in: body
           name: category
@@ -267,7 +294,9 @@ paths:
           schema:
             $ref: '#/definitions/Error'
     delete:
-      summary: Delete a item category
+      summary: Delete an item category
+      tags:
+        -  Food Categories
       parameters:
         - in: body
           name: category
@@ -287,28 +316,6 @@ paths:
           description: Internal server error
           schema:
             $ref: '#/definitions/Error'
-    get:
-      summary: Get all the categories
-      responses:
-        200:
-          description: OK
-          schema:
-            properties:
-              categoryList:
-                type: array
-                items:
-                  $ref: '#/definitions/CategoryDetails'
-                required:
-                  - categoryList
-        400:
-          description: Bad request
-          schema:
-            $ref: '#/definitions/Error'
-        500:
-          description: Internal server error
-          schema:
-            $ref: '#/definitions/Error'
-
 definitions:
   Success:
     type: object
@@ -340,51 +347,23 @@ definitions:
         example: Error message comes here!!
   Category:
     properties:
-      categories:
-        $ref: '#/definitions/Categories'
+      itemsByCategory:
+        type: array
+        items:
+          $ref: '#/definitions/Categories'
   Categories:
+    type: object
+    required:
+      - categoryId
+        categoryName
     properties:
-      salad:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      breakfast:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      hotDrinks:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      desserts:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      frenchToast:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      mainCource:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      pancake:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      pastas:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      quenchers:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      starters:
-        type: array
-        items:
-          $ref: '#/definitions/FoodDetails'
-      waffles:
+      categoryId:
+        type: integer
+        example: 1
+      categoryName:
+        type: string
+        example: "Salads"
+      items:
         type: array
         items:
           $ref: '#/definitions/FoodDetails'
@@ -435,11 +414,11 @@ definitions:
       imageName:
         type: string
         example: test.jpeg
-
   CategoryDetails:
     type: object
     required:
       - categoryName
+        categoryId
     properties:
       categoryId:
         type: integer
