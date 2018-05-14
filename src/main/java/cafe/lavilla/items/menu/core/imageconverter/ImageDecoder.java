@@ -1,15 +1,20 @@
 package cafe.lavilla.items.menu.core.imageconverter;
 
+import cafe.lavilla.items.menu.core.constants.FoodMenuConstants;
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
 /**
- * Class that decode the BASE64 image string to an image and save it in a directory.
+ * Class that save the image in a directory.
  */
 public class ImageDecoder {
 
@@ -19,68 +24,25 @@ public class ImageDecoder {
         Random random = new Random();
         String randomNum = null;
 
-        String dirPath = null;
-        String imagePath = null;
-        if (Objects.equals(category, "tmp")) {
+        String dirPath;
+        String imagePath;
+        if (Objects.equals(category, FoodMenuConstants.CommonConstants.TMP_ID)) {
             randomNum = String.valueOf(random.nextInt(100) + 1);
-            dirPath = "/home/cafe-lavilla-images-tmp";
-            imagePath = dirPath + "/" + category + randomNum + ".jpeg";
+            dirPath = FoodMenuConstants.CommonConstants.TMP_IMAGE_DIRECTORY_PATH;
+            imagePath = dirPath + category + randomNum + FoodMenuConstants.CommonConstants.IMAGE_EXT;
         } else {
             String imageName = String.valueOf(id);
-            switch (category) {
-                case "Breakfast":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Hot Drinks":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Desserts":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "French Toast":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Main Course":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Pancakes":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Pasta":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Quenchers":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Salads":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Starters":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-                case "Waffles":
-                    dirPath = setDirectoryPath(category.toLowerCase());
-                    imagePath = setImagePath(dirPath, imageName);
-                    break;
-            }
+            dirPath = FoodMenuConstants.CommonConstants.IMAGE_DIRECTORY_PATH;
+            imagePath = setImagePath(dirPath, imageName);
         }
 
         File directory = new File(dirPath);
         if (!directory.exists()) {
-            directory.mkdir();
-            directory.canExecute();
-            directory.canRead();
-            directory.canWrite();
+            if (directory.mkdir()) {
+                directory.canExecute();
+                directory.canRead();
+                directory.canWrite();
+            }
         }
 
         try {
@@ -92,26 +54,33 @@ public class ImageDecoder {
             }
             outputStream.flush();
             outputStream.close();
-            if (Objects.equals(category, "tmp")) {
-                imageDetails.add("http://188.166.255.131:8080/cafe-lavilla/tmp/images/" + category + randomNum + "" +
-                        ".jpeg");
-                imageDetails.add(category + randomNum + ".jpeg");
+            if (Objects.equals(category, FoodMenuConstants.CommonConstants.TMP_ID)) {
+                imageDetails.add(FoodMenuConstants.CommonConstants.TMP_IMAGE_SERVER_URL + category + randomNum +
+                        FoodMenuConstants.CommonConstants.IMAGE_EXT);
+                imageDetails.add(category + randomNum + FoodMenuConstants.CommonConstants.IMAGE_EXT);
             } else {
                 imageDetails.add(imagePath);
+                File tmpDir = new File(FoodMenuConstants.CommonConstants.TMP_IMAGE_DIRECTORY_PATH);
+                if (tmpDir.exists()) {
+                    if (tmpDir.list().length != 0) {
+                        String[] files = tmpDir.list();
+                        for (String temp : files) {
+                            File fileDelete = new File(tmpDir, temp);
+                            fileDelete.delete();
+                        }
+                    }
+                }
             }
         } catch (IOException e) {
-            throw new FoodItemException("Could not save the image", "error", e);
+            throw new FoodItemException(
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_IMAGE_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_IMAGE_FAILURE.getErrorCode(), e);
         }
         return imageDetails;
     }
 
-    private String setDirectoryPath(String category) {
-
-        return "/home/cafe-lavilla-food-menu-images/" + category;
-    }
-
     private String setImagePath(String dirPath, String imageId) {
 
-        return dirPath + "/" + imageId + ".jpeg";
+        return dirPath + imageId + FoodMenuConstants.CommonConstants.IMAGE_EXT;
     }
 }

@@ -5,12 +5,13 @@ package cafe.lavilla.items.menu.core.model;
  */
 public class FoodItem {
     private String category;
-    private int id;
+    private int categoryId;
+    private int itemId;
     private String name;
     private String description;
-    private int price;
-    private String imgString;
+    private float price;
     private String imgLocation;
+    private String imgPath;
 
     public String getCategory() {
         return category;
@@ -20,12 +21,20 @@ public class FoodItem {
         this.category = category;
     }
 
-    public int getId() {
-        return id;
+    public int getCategoryId() {
+        return categoryId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
     }
 
     public String getName() {
@@ -44,20 +53,12 @@ public class FoodItem {
         this.description = description;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
-    }
-
-    public String getImgString() {
-        return imgString;
-    }
-
-    public void setImgString(String imgString) {
-        this.imgString = imgString;
     }
 
     public String getImgLocation() {
@@ -66,5 +67,13 @@ public class FoodItem {
 
     public void setImgLocation(String imgLocation) {
         this.imgLocation = imgLocation;
+    }
+
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
     }
 }

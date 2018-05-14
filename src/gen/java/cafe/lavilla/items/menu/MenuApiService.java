@@ -20,10 +20,10 @@ import org.apache.cxf.jaxrs.ext.multipart.Attachment;
 import javax.ws.rs.core.Response;
 
 public abstract class MenuApiService {
-    public abstract Response deleteFoodItem(String category,Integer id);
+    public abstract Response deleteFoodItem(Integer id);
     public abstract Response getCategories();
-    public abstract Response getCategory(String category);
-    public abstract Response getFoodItem(String category,Integer id);
+    public abstract Response getItemsByCategory(Integer categoryId);
+    public abstract Response getFoodItem(Integer id);
     public abstract Response menuImageUploadTmpPost(InputStream imageInputStream,Attachment imageDetail);
     public abstract Response menuImageUploadTmpPut(InputStream imageInputStream,Attachment imageDetail);
     public abstract Response menuItemConfigurationPost(FoodDetailsDTO foodItem);

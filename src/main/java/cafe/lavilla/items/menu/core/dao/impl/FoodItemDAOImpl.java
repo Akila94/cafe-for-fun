@@ -5,7 +5,6 @@ import cafe.lavilla.items.menu.core.constants.SQLQueries;
 import cafe.lavilla.items.menu.core.dao.FoodItemDAO;
 import cafe.lavilla.items.menu.core.exception.FoodItemException;
 import cafe.lavilla.items.menu.core.imageconverter.ImageDecoder;
-import cafe.lavilla.items.menu.core.model.Category;
 import cafe.lavilla.items.menu.core.model.FoodItem;
 
 import java.io.File;
@@ -20,19 +19,13 @@ import java.sql.Savepoint;
 import java.util.ArrayList;
 import java.util.List;
 
-import static cafe.lavilla.items.menu.core.dao.QueryFilters.filterDeleteQuery;
-import static cafe.lavilla.items.menu.core.dao.QueryFilters.filterGetAllQuery;
-import static cafe.lavilla.items.menu.core.dao.QueryFilters.filterGetQuery;
-import static cafe.lavilla.items.menu.core.dao.QueryFilters.filterInsertQuery;
-import static cafe.lavilla.items.menu.core.dao.QueryFilters.filterUpdateQuery;
 import static cafe.lavilla.items.menu.core.dbconnection.DBConnection.getDBConnection;
 
 /**
- * Class to access the breakfast table of the database.
+ * Class to access the items table of the database.
  */
 public class FoodItemDAOImpl implements FoodItemDAO {
 
-    //    Need to update the method
     @Override
     public FoodItem addItem(FoodItem foodItem) throws FoodItemException {
 
@@ -40,320 +33,244 @@ public class FoodItemDAOImpl implements FoodItemDAO {
         Savepoint savepoint;
         ImageDecoder imageDecoder = new ImageDecoder();
 
-        String[] queries = filterInsertQuery(foodItem.getCategory());
-        String insertQuery = queries[0];
-        String lastInsertedIdQuery = queries[1];
-        String insertImageQuery = queries[2];
-
-        File tmpFile = new File("/home/cafe-lavilla-images-tmp/" + foodItem.getImgLocation());
+        String insertQuery = SQLQueries.INSERT_ITEM_QUERY;
+        String lastInsertedIdQuery = SQLQueries.GET_LAST_INSERTED_ITEM_ID_QUERY;
+        String insertImageQuery = SQLQueries.INSERT_ITEM_IMAGE_QUERY;
+        File tmpFile = null;
+        InputStream tmpInputStream = null;
 
         try (Connection connection = getDBConnection()) {
             connection.setAutoCommit(false);
             savepoint = connection.setSavepoint();
-            InputStream tmpInputStream = new FileInputStream(tmpFile);
+
+            if (foodItem.getImgLocation() != null) {
+                tmpFile = new File(
+                        FoodMenuConstants.CommonConstants.TMP_IMAGE_DIRECTORY_PATH + foodItem.getImgLocation());
+                tmpInputStream = new FileInputStream(tmpFile);
+            }
+
             try (PreparedStatement insertPrepStat = connection.prepareStatement(insertQuery);
                  PreparedStatement lastInsertedIdPrepStat = connection.prepareStatement(lastInsertedIdQuery);
                  PreparedStatement insertImagePrepStat = connection.prepareStatement(insertImageQuery)) {
-                insertPrepStat.setString(1, foodItem.getName());
-                insertPrepStat.setString(2, foodItem.getDescription());
-                insertPrepStat.setInt(3, foodItem.getPrice());
-//                insertPrepStat.setString(4, );
-//                FileSystemUtils.deleteRecursively("/home/cafe-lavilla-images-tmp");
+                insertPrepStat.setInt(1, foodItem.getCategoryId());
+                insertPrepStat.setString(2, foodItem.getName());
+                insertPrepStat.setString(3, foodItem.getDescription());
+                insertPrepStat.setFloat(4, foodItem.getPrice());
                 insertPrepStat.executeUpdate();
                 try (ResultSet resultSet = lastInsertedIdPrepStat.executeQuery()) {
                     resultSet.first();
 
-                    List<String> imageDetails = imageDecoder.saveImage(tmpInputStream, foodItem.getCategory(), resultSet
-                            .getInt(1));
-                    tmpFile.delete();
-                    insertImagePrepStat.setString(1, imageDetails.get(0));
+                    if (foodItem.getImgLocation() == null) {
+                        insertImagePrepStat.setString(1, foodItem.getImgLocation());
+                    } else {
+                        List<String> imageDetails =
+                                imageDecoder.saveImage(tmpInputStream, foodItem.getCategory(), resultSet.getInt(1));
+                        insertImagePrepStat.setString(1, imageDetails.get(0));
+                    }
+
                     insertImagePrepStat.setInt(2, resultSet.getInt(1));
                     insertImagePrepStat.executeUpdate();
 
-                    addedItem = getItemById(connection, foodItem.getCategory(), resultSet.getInt(1));
+                    addedItem = getItemById(connection, resultSet.getInt(1));
                 }
                 connection.commit();
             } catch (SQLException | FoodItemException e) {
                 connection.rollback(savepoint);
                 throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_BREAKFAST_ITEM_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_BREAKFAST_ITEM_FAILURE.getErrorMessage(), e);
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_ITEM_FAILURE.getErrorMessage(),
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_ADD_ITEM_FAILURE.getErrorCode(), e);
             }
         } catch (SQLException | FileNotFoundException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(), e);
         }
         return addedItem;
     }
 
     @Override
     public FoodItem updateItem(FoodItem foodItem) throws FoodItemException {
-        //    Need to update the method
+
         FoodItem updatedItem;
         Savepoint savepoint;
-        String updateQuery = filterUpdateQuery(foodItem.getCategory());
+        ImageDecoder imageDecoder = new ImageDecoder();
+        String updateQuery = SQLQueries.UPDATE_ITEM_QUERY;
+
         try (Connection connection = getDBConnection()) {
             connection.setAutoCommit(false);
             savepoint = connection.setSavepoint();
+
+            if (foodItem.getImgLocation() == null) {
+                File tmpFile = new File(FoodMenuConstants.CommonConstants.IMAGE_DIRECTORY_PATH + foodItem.getItemId() +
+                        FoodMenuConstants.CommonConstants.IMAGE_EXT);
+                if (tmpFile.exists()) {
+                    tmpFile.delete();
+                }
+            } else if (foodItem.getImgLocation().contains(FoodMenuConstants.CommonConstants.TMP_ID)) {
+                File tmpFile = new File(
+                        FoodMenuConstants.CommonConstants.TMP_IMAGE_DIRECTORY_PATH + foodItem.getImgLocation());
+                InputStream tmpInputStream = new FileInputStream(tmpFile);
+                List<String> imageDetails = imageDecoder.saveImage(tmpInputStream, foodItem.getCategory(), foodItem
+                        .getItemId());
+                foodItem.setImgLocation(imageDetails.get(0));
+            } else if (foodItem.getImgLocation().contains(FoodMenuConstants.CommonConstants.IMAGE_SERVER_URL)) {
+                FoodItem currentItem = getItemById(connection, foodItem.getItemId());
+                foodItem.setImgLocation(currentItem.getImgPath());
+            }
+
             try (PreparedStatement updatePrepStat = connection.prepareStatement(updateQuery)) {
-                updatePrepStat.setString(1, foodItem.getName());
-                updatePrepStat.setString(2, foodItem.getDescription());
-                updatePrepStat.setInt(3, foodItem.getPrice());
-                updatePrepStat.setString(4, foodItem.getImgLocation());
-                updatePrepStat.setInt(5, foodItem.getId());
+                updatePrepStat.setInt(1, foodItem.getCategoryId());
+                updatePrepStat.setString(2, foodItem.getName());
+                updatePrepStat.setString(3, foodItem.getDescription());
+                updatePrepStat.setFloat(4, foodItem.getPrice());
+                updatePrepStat.setString(5, foodItem.getImgLocation());
+                updatePrepStat.setInt(6, foodItem.getItemId());
                 updatePrepStat.executeUpdate();
-                updatedItem = getItemById(connection, foodItem.getCategory(), foodItem.getId());
+                updatedItem = getItemById(connection, foodItem.getItemId());
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback(savepoint);
                 throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_UPDATE_SALAD_ITEM_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_UPDATE_SALAD_ITEM_FAILURE.getErrorMessage(), e);
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_UPDATE_ITEM_FAILURE.getErrorMessage(),
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_UPDATE_ITEM_FAILURE.getErrorCode(), e);
             }
-        } catch (SQLException e) {
+        } catch (SQLException | FileNotFoundException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(), e);
         }
         return updatedItem;
     }
 
     @Override
-    public FoodItem deleteItem(String category, int breakfastId) throws FoodItemException {
+    public FoodItem deleteItem(int itemId) throws FoodItemException {
 
         FoodItem deletedItem;
         Savepoint savepoint;
-        String deleteQuery = filterDeleteQuery(category);
+        String deleteQuery = SQLQueries.DELETE_ITEM_QUERY;
+
         try (Connection connection = getDBConnection()) {
             connection.setAutoCommit(false);
             savepoint = connection.setSavepoint();
             try (PreparedStatement deletePrepStat = connection.prepareStatement(deleteQuery)) {
-                deletedItem = getItemById(connection, category, breakfastId);
-                File image = new File(deletedItem.getImgLocation());
-                if (image.delete()) {
-                    deletePrepStat.setInt(1, breakfastId);
-                    deletePrepStat.executeUpdate();
-                    connection.commit();
-                } else {
-                    throw new FoodItemException(
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_BREAKFAST_IMAGE_FAILURE.getErrorCode(),
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_BREAKFAST_IMAGE_FAILURE
-                                    .getErrorMessage());
+                deletedItem = getItemById(connection, itemId);
+                deletePrepStat.setInt(1, itemId);
+                deletePrepStat.executeUpdate();
+                if (deletedItem.getImgPath() != null) {
+                    File image = new File(deletedItem.getImgPath());
+                    if (image.delete()) {
+                        //--Add a log
+                    } else {
+                        throw new FoodItemException(
+                                FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_IMAGE_FAILURE
+                                        .getErrorMessage(),
+                                FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_IMAGE_FAILURE
+                                        .getErrorCode());
+                    }
                 }
+                connection.commit();
             } catch (SQLException | FoodItemException e) {
                 connection.rollback(savepoint);
                 throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_BREAKFAST_ITEM_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_BREAKFAST_ITEM_FAILURE.getErrorMessage()
-                        , e);
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_ITEM_FAILURE.getErrorMessage(),
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_DELETE_ITEM_FAILURE.getErrorCode(), e);
             }
         } catch (SQLException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(), e);
         }
         return deletedItem;
     }
 
     @Override
-    public FoodItem getItem(String category, int id) throws FoodItemException {
+    public FoodItem getItem(int itemId) throws FoodItemException {
 
         try (Connection connection = getDBConnection()) {
-            return getItemById(connection, category, id);
+            return getItemById(connection, itemId);
         } catch (SQLException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(), e);
         }
     }
 
-    private FoodItem getItemById(Connection connection, String category, int id) throws FoodItemException {
+    private FoodItem getItemById(Connection connection, int itemId) throws FoodItemException {
 
         FoodItem foodItem = new FoodItem();
-        String getItemByIdQuery = filterGetQuery(category);
+        String getItemByIdQuery = SQLQueries.GET_ITEM_BY_ID_QUERY;
         try (PreparedStatement getByIdPrepStat = connection.prepareStatement(getItemByIdQuery)) {
-            getByIdPrepStat.setInt(1, id);
+            getByIdPrepStat.setInt(1, itemId);
             try (ResultSet resultSet = getByIdPrepStat.executeQuery()) {
                 resultSet.first();
-                foodItem.setId(resultSet.getInt(1));
-                foodItem.setName(resultSet.getString(2));
-                foodItem.setDescription(resultSet.getString(3));
-                foodItem.setPrice(resultSet.getInt(4));
-                foodItem.setImgLocation(
-                        "http://188.166.255.131:8080/cafe-lavilla/images/" + category.toLowerCase() + "/" + resultSet
-                                .getInt(1) + ".jpeg");
+                foodItem.setCategoryId(resultSet.getInt(1));
+                foodItem.setCategory(resultSet.getString(2));
+                foodItem.setItemId(resultSet.getInt(3));
+                foodItem.setName(resultSet.getString(4));
+                foodItem.setDescription(resultSet.getString(5));
+                foodItem.setPrice(resultSet.getFloat(6));
+                foodItem.setImgPath(resultSet.getString(7));
+                if (resultSet.getString(7) != null) {
+                    foodItem.setImgLocation(
+                            FoodMenuConstants.CommonConstants.IMAGE_SERVER_URL + resultSet.getInt(3) +
+                                    FoodMenuConstants.CommonConstants.IMAGE_EXT);
+                } else {
+                    foodItem.setImgLocation(null);
+                }
             } catch (SQLException e) {
                 throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_BREAKFAST_ITEM_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_BREAKFAST_ITEM_FAILURE.getErrorMessage(), e);
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEM_FAILURE.getErrorMessage(),
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEM_FAILURE.getErrorCode(), e);
             }
         } catch (SQLException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(), e);
         }
         return foodItem;
     }
 
-    @Override
-    public List getAllItems() throws FoodItemException {
-
-//        List<List> allItems = new ArrayList<>();
-//        String getSaladsQuery = SQLQueries.GET_SALAD_ITEMS_QUERY;
-//        String getBreakfastsQuery = SQLQueries.GET_BREAKFAST_ITEMS_QUERY;
-//        String getHotDrinksQuery = SQLQueries.GET_HOT_DRINKS_QUERY;
-//        String getDessertsQuery = SQLQueries.GET_DESSERT_QUERY;
-//        String getFrenchToastsQuery = SQLQueries.GET_FRENCH_TOAST_QUERY;
-//        String getMainCoursesQuery = SQLQueries.GET_MAIN_COURSE_QUERY;
-//        String getPanCakesQuery = SQLQueries.GET_PAN_CAKES_QUERY;
-//        String getPastasQuery = SQLQueries.GET_PASTA_QUERY;
-//        String getQuenchersQuery = SQLQueries.GET_QUENCHERS_QUERY;
-//        String getStartersQuery = SQLQueries.GET_STARTERS_QUERY;
-//        String getWafflesQuery = SQLQueries.GET_WAFFLES_QUERY;
-//
-//        try (Connection connection = getDBConnection()) {
-//            try (PreparedStatement getSaladsPrepStat = connection.prepareStatement(getSaladsQuery);
-//                 PreparedStatement getBreakfastsPrepStat = connection.prepareStatement(getBreakfastsQuery);
-//                 PreparedStatement getHotDrinksPrepStat = connection.prepareStatement(getHotDrinksQuery);
-//                 PreparedStatement getDessertsPrepStat = connection.prepareStatement(getDessertsQuery);
-//                 PreparedStatement getFrenchToastsPrepStat = connection.prepareStatement(getFrenchToastsQuery);
-//                 PreparedStatement getMainCoursePrepStat = connection.prepareStatement(getMainCoursesQuery);
-//                 PreparedStatement getPanCakesPrepStat = connection.prepareStatement(getPanCakesQuery);
-//                 PreparedStatement getPastasPrepStat = connection.prepareStatement(getPastasQuery);
-//                 PreparedStatement getQuenchersPrepStat = connection.prepareStatement(getQuenchersQuery);
-//                 PreparedStatement getStartersPrepStat = connection.prepareStatement(getStartersQuery);
-//                 PreparedStatement getWafflesPrepStat = connection.prepareStatement(getWafflesQuery)) {
-//                try (ResultSet saladsRes = getSaladsPrepStat.executeQuery();
-//                     ResultSet breakFastRes = getBreakfastsPrepStat.executeQuery();
-//                     ResultSet hotDrinksRes = getHotDrinksPrepStat.executeQuery();
-//                     ResultSet dessertsRes = getDessertsPrepStat.executeQuery();
-//                     ResultSet frenchToastsRes = getFrenchToastsPrepStat.executeQuery();
-//                     ResultSet mainCourseRes = getMainCoursePrepStat.executeQuery();
-//                     ResultSet panCakesRes = getPanCakesPrepStat.executeQuery();
-//                     ResultSet pastaRes = getPastasPrepStat.executeQuery();
-//                     ResultSet quenchersRes = getQuenchersPrepStat.executeQuery();
-//                     ResultSet startersRes = getStartersPrepStat.executeQuery();
-//                     ResultSet wafflesRes = getWafflesPrepStat.executeQuery()) {
-//                    allItems.add(setFoodItem(saladsRes));
-//                    allItems.add(setFoodItem(breakFastRes));
-//                    allItems.add(setFoodItem(hotDrinksRes));
-//                    allItems.add(setFoodItem(dessertsRes));
-//                    allItems.add(setFoodItem(frenchToastsRes));
-//                    allItems.add(setFoodItem(mainCourseRes));
-//                    allItems.add(setFoodItem(panCakesRes));
-//                    allItems.add(setFoodItem(pastaRes));
-//                    allItems.add(setFoodItem(quenchersRes));
-//                    allItems.add(setFoodItem(startersRes));
-//                    allItems.add(setFoodItem(wafflesRes));
-//                } catch (SQLException e) {
-//                    throw new FoodItemException(
-//                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorCode(),
-//                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorMessage(), e);
-//                }
-//            } catch (SQLException e) {
-//                throw new FoodItemException(
-//                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(),
-//                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(), e);
-//            }
-//        } catch (SQLException e) {
-//            throw new FoodItemException(
-//                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-//                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
-//        }
-//        return allItems;
-        return null;
-    }
-
-//    private List<FoodItem> setFoodItem(ResultSet resultSet) throws SQLException {
-//
-//        List<FoodItem> foodItems = new ArrayList<>();
-//        FoodItem foodItem = new FoodItem();
-//        while (resultSet.next()) {
-//            foodItem.setId(resultSet.getInt(1));
-//            foodItem.setName(resultSet.getString(2));
-//            foodItem.setDescription(resultSet.getString(3));
-//            foodItem.setPrice(resultSet.getInt(4));
-//            foodItem.setImgLocation("http://188.166.255.131:8080/cafe-lavilla/images/" + resultSet.getString(2) +
-//                    ".jpeg");
-//            foodItems.add(foodItem);
-//        }
-//        return foodItems;
-//    }
-
-    public List<FoodItem> getItemsByCategory(String category) throws FoodItemException {
+    public List<FoodItem> getItemsByCategory(int categoryId) throws FoodItemException {
 
         List<FoodItem> foodItemList = new ArrayList<>();
-        String getItemsQuery = filterGetAllQuery(category);
+        String getItemsQuery = SQLQueries.GET_ITEMS_BY_CATEGORY_QUERY;
+
         try (Connection connection = getDBConnection()) {
             try (PreparedStatement getItemsPrepStat = connection.prepareStatement(getItemsQuery)) {
+                getItemsPrepStat.setInt(1, categoryId);
                 try (ResultSet getItemsRes = getItemsPrepStat.executeQuery()) {
                     while (getItemsRes.next()) {
                         FoodItem foodItem = new FoodItem();
-                        foodItem.setId(getItemsRes.getInt(1));
-                        foodItem.setName(getItemsRes.getString(2));
-                        foodItem.setDescription(getItemsRes.getString(3));
-                        foodItem.setPrice(getItemsRes.getInt(4));
-//                        foodItem.setImgLocation("http://188.166.255.131:8080/cafe-lavilla/images/" + getItemsRes
-//                                .getString(2) + ".jpeg");
-                        foodItem.setImgLocation("http://188.166.255.131:8080/cafe-lavilla/images/test title.jpeg");
+                        foodItem.setCategoryId(getItemsRes.getInt(1));
+                        foodItem.setCategory(getItemsRes.getString(2));
+                        foodItem.setItemId(getItemsRes.getInt(3));
+                        foodItem.setName(getItemsRes.getString(4));
+                        foodItem.setDescription(getItemsRes.getString(5));
+                        foodItem.setPrice(getItemsRes.getFloat(6));
+                        if (getItemsRes.getString(7) != null) {
+                            foodItem.setImgLocation(
+                                    FoodMenuConstants.CommonConstants.IMAGE_SERVER_URL + getItemsRes.getInt(3) +
+                                            FoodMenuConstants.CommonConstants.IMAGE_EXT);
+                        } else {
+                            foodItem.setImgLocation(null);
+                        }
                         foodItemList.add(foodItem);
                     }
                 } catch (SQLException e) {
                     throw new FoodItemException(
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorCode(),
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorMessage(), e);
+                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorMessage(),
+                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_ITEMS_FAILURE.getErrorCode(), e);
                 }
             } catch (SQLException e) {
                 throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(), e);
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(),
+                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(), e);
             }
         } catch (SQLException e) {
             throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(),
+                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(), e);
         }
         return foodItemList;
     }
-
-    @Override public List<Category> getAllCategories() throws FoodItemException {
-        List<Category> categoryList = new ArrayList<>();
-        String getCategoryListQuery = SQLQueries.GET_CATEGORIES_QUERY;
-        try (Connection connection = getDBConnection()) {
-            try (PreparedStatement getCategoryListPrepStat = connection.prepareStatement(getCategoryListQuery)) {
-                try (ResultSet categoryListRes = getCategoryListPrepStat.executeQuery()) {
-                    while (categoryListRes.next()){
-                        Category category=new Category();
-                        category.setCategoryId(categoryListRes.getInt(1));
-                        category.setCategoryName(categoryListRes.getString(2));
-                        categoryList.add(category);
-                    }
-                } catch (SQLException e) {
-                    throw new FoodItemException(
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CATEGORIES_FAILURE.getErrorCode(),
-                            FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CATEGORIES_FAILURE.getErrorMessage(), e);
-                }
-            } catch (SQLException e) {
-                throw new FoodItemException(
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorCode(),
-                        FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_CREATE_PREP_STAT_FAILURE.getErrorMessage(), e);
-            }
-        } catch (SQLException e) {
-            throw new FoodItemException(
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorCode(),
-                    FoodMenuConstants.ErrorMessages.ERROR_MESSAGE_GET_CONNECTION_FAILURE.getErrorMessage(), e);
-        }
-        return categoryList;
-    }
 }
-
-
-
-
-
-
-
-
-
-
