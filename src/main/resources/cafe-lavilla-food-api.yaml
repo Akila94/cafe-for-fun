@@ -16,6 +16,7 @@ consumes:
   - application/json
 produces:
   - application/json
+
 paths:
   /menu/categories:
     get:
@@ -34,6 +35,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/Error'
+
   /menu/category:
     post:
       operationId: setFoodItem
@@ -82,6 +84,8 @@ paths:
   /menu/item/configuration:
     post:
       summary: "Add items"
+      tags:
+        - Food Items
       description: "Adding food item details to the database"
       parameters:
         - in: "body"
@@ -234,11 +238,7 @@ paths:
         200:
           description: OK
           schema:
-            properties:
-              categoryList:
-                type: array
-                items:
-                  $ref: '#/definitions/CategoryDetails'
+            $ref: '#/definitions/CategoryList'
         400:
           description: Bad request
           schema:
@@ -426,3 +426,10 @@ definitions:
       categoryName:
         type: string
         example: "Salads"
+  CategoryList:
+    type: object
+    properties:
+      categoryList:
+        type: array
+        items:
+          $ref: '#/definitions/CategoryDetails'
