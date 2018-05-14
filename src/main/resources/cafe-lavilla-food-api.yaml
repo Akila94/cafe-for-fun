@@ -102,7 +102,7 @@ paths:
 
   /menu/{category}:
     get:
-      operationId: getCategory
+      operationId: getItemsByCategory
       summary: Gets all the foods of the provided category
       description: >
         This API is used to get all the food items of the given category
@@ -112,7 +112,7 @@ paths:
       - in: path
         name: category
         description: Food category that is needed
-        type: string
+        type: integer
         required: true
       responses:
         200:
@@ -121,7 +121,8 @@ paths:
             $ref: '#/definitions/Group'
         404:
           description: Provided category not found
-  /menu/{category}/{id}:
+
+  /menu/items/{id}:
     get:
       operationId: getFoodItem
       summary: Get the food item of a given id and a category
@@ -130,11 +131,11 @@ paths:
       tags:
       - Food Items
       parameters:
-      - in: path
-        name: category
-        description: Category of the food
-        required: true
-        type: string
+#      - in: path
+#        name: category
+#        description: Category of the food
+#        required: true
+#        type: string
       - in: path
         name: id
         description: Id of the food item to get
@@ -157,11 +158,11 @@ paths:
       tags:
       - Food Items
       parameters:
-      - in: path
-        name: category
-        description: Category of the food item
-        required: true
-        type: string
+#      - in: path
+#        name: category
+#        description: Category of the food item
+#        required: true
+#        type: string
       - in: path
         name: id
         description: Id of the food item to be deleted
@@ -172,6 +173,7 @@ paths:
           description: Food item deleted successfully
         404:
          description: Food item not found
+
   /menu/image/upload/tmp:
     post:
       summary: Adds an image for a food item
@@ -389,17 +391,21 @@ definitions:
   FoodDetails:
     type: object
     required:
-      - category
-        id
+      - categoryId
+        category
+        itemId
         title
         description
         price
         imageSource
     properties:
+      categoryId:
+        type: integer
+        example: 1
       category:
         type: string
         example: "salad"
-      id:
+      itemId:
         type: integer
         example: 1
       title:
